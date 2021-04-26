@@ -35,7 +35,7 @@ colorscheme gruvbox
 
 set-face global Default default,default
 set-face global BufferPadding rgb:504945,default
-set-face global comment rgb:999999
+set-face global comment rgb:bdae93
 set-face global PrimarySelection rgba:ebdbb2a0,rgb:436558+g
 set-face global SecondarySelection rgba:282828a0,rgb:436558+g
 set-face global Whitespace rgb:3a3a3a+f
@@ -56,7 +56,7 @@ set-option      global scrolloff 2,5
 set-option      global autocomplete prompt
 set-option      global tabstop 4
 set-option      global indentwidth 4
-set-option      global modelinefmt '{rgb:999999}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+set-option      global modelinefmt '{rgb:bdae93}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
 set-option      global disabled_hooks '.*-(insert|indent)'
 set-option      global idle_timeout 300
 set-option      global completers word=buffer
@@ -130,7 +130,7 @@ add-highlighter -override global/show-whitespaces show-whitespaces \
 
 hook global FocusIn .* %{
     set-face window StatusLine 'rgb:ebdbb2,rgb:282828'
-    set-option window modelinefmt '{rgb:ebdbb2,default}%val{bufname} {rgb:999999,default}%val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+    set-option window modelinefmt '{rgb:ebdbb2,default}%val{bufname} {rgb:bdae93,default}%val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
 
     # set-face window StatusLine 'rgb:282828,rgb:aaaaaa'
     # set-option window modelinefmt '{rgb:282828,default}%val{bufname} {rgb:282828,default}%val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
@@ -140,7 +140,7 @@ hook global FocusIn .* %{
 
 hook global FocusOut .* %{
     set-face window StatusLine 'rgb:504945,rgb:181818'
-    set-option window modelinefmt '{rgb:999999,default}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+    set-option window modelinefmt '{rgb:bdae93,default}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
 
     # set-face window StatusLine 'rgb:666666,rgb:555555'
     # set-option window modelinefmt '{rgb:666666,default}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
