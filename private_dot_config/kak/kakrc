@@ -33,21 +33,18 @@ evaluate-commands %sh{ kcr init kakoune }
 
 colorscheme gruvbox
 
-set-face global Default default,default
-set-face global BufferPadding rgb:504945,default
-set-face global comment rgb:bdae93
-set-face global PrimarySelection rgba:ebdbb2a0,rgb:436558+g
-set-face global SecondarySelection rgba:282828a0,rgb:436558+g
-set-face global Whitespace rgb:3a3a3a+f
-set-face global WrapMarker rgb:504945
-set-face global Reference default,rgba:282828a0
+# source "%val{config}/theme-gray.kak"
+source "%val{config}/theme-dark.kak"
 
 ###
 ### OPTIONS
 ###
 
+declare-option -hidden str common_modeline \
+    '%val{bufname} %val{cursor_line}:%val{cursor_char_column} --%val{client}@%val{session}--'
+
 set-option -add global ui_options ncurses_assistant=none
-set-option -add global ui_options ncurses_status_on_top=true
+set-option -add global ui_options ncurses_status_on_top=false
 set-option -add global ui_options terminal_set_title=false
 set-option      global startup_info_version 20200901
 set-option      global autoreload yes
@@ -56,7 +53,7 @@ set-option      global scrolloff 2,5
 set-option      global autocomplete prompt
 set-option      global tabstop 4
 set-option      global indentwidth 4
-set-option      global modelinefmt '{rgb:bdae93}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+set-option      global modelinefmt "{{mode_info}} {{context_info}} %opt{common_modeline}"
 set-option      global disabled_hooks '.*-(insert|indent)'
 set-option      global idle_timeout 300
 set-option      global completers word=buffer
@@ -129,21 +126,13 @@ add-highlighter -override global/show-whitespaces show-whitespaces \
 ###
 
 hook global FocusIn .* %{
-    set-face window StatusLine 'rgb:ebdbb2,rgb:282828'
-    set-option window modelinefmt '{rgb:ebdbb2,default}%val{bufname} {rgb:bdae93,default}%val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
-
-    # set-face window StatusLine 'rgb:282828,rgb:aaaaaa'
-    # set-option window modelinefmt '{rgb:282828,default}%val{bufname} {rgb:282828,default}%val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+    set-option window modelinefmt "{{mode_info}} {{context_info}} %opt{common_modeline}"
 
     # try %{ enable-wrap }
 }
 
 hook global FocusOut .* %{
-    set-face window StatusLine 'rgb:504945,rgb:181818'
-    set-option window modelinefmt '{rgb:bdae93,default}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
-
-    # set-face window StatusLine 'rgb:666666,rgb:555555'
-    # set-option window modelinefmt '{rgb:666666,default}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+    set-option window modelinefmt "%opt{common_modeline}"
 
     # try %{ disable-wrap }
 }
@@ -193,6 +182,8 @@ map global normal <a-Q> <a-B>
 
 hook global WinSetOption filetype=.* %{
     expandtab
+
+    # toggle-wrap
 
     set-option buffer tabstop 4
     set-option buffer indentwidth 4
