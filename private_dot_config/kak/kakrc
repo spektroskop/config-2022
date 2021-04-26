@@ -1,0 +1,215 @@
+###
+### PLUGINS
+### 
+
+source "%val{config}/plugins/plug.kak/rc/plug.kak"
+
+plug "andreyorst/plug.kak" noload
+
+plug "andreyorst/smarttab.kak" defer smarttab %{
+    set-option buffer softtabstop 4
+    expandtab
+} config %{
+    hook global WinSetOption filetype=go noexpandtab
+}
+
+plug "Delapouite/kakoune-buffers" config %{
+    map global user b ':enter-buffers-mode<ret>' -docstring 'Buffers'
+}
+
+plug "Delapouite/kakoune-cd" config %{
+  map global user c ':enter-user-mode cd<ret>' -docstring 'Chdir'
+}
+
+plug "kak-lsp/kak-lsp" do %{
+    cargo install --locked --force --path .
+} 
+
+evaluate-commands %sh{ kcr init kakoune }
+
+###
+### COLORS
+###
+
+colorscheme gruvbox
+
+set-face global Default default,default
+set-face global BufferPadding rgb:504945,default
+set-face global comment rgb:999999
+set-face global PrimarySelection rgba:ebdbb2a0,rgb:436558+g
+set-face global SecondarySelection rgba:282828a0,rgb:436558+g
+set-face global Whitespace rgb:3a3a3a+f
+set-face global WrapMarker rgb:504945
+set-face global Reference default,rgba:282828a0
+
+###
+### OPTIONS
+###
+
+set-option -add global ui_options ncurses_assistant=none
+set-option -add global ui_options ncurses_status_on_top=true
+set-option -add global ui_options terminal_set_title=false
+set-option      global startup_info_version 20200901
+set-option      global autoreload yes
+set-option      global grepcmd 'rg -iHL --column'
+set-option      global scrolloff 2,5
+set-option      global autocomplete prompt
+set-option      global tabstop 4
+set-option      global indentwidth 4
+set-option      global modelinefmt '{rgb:999999}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+set-option      global disabled_hooks '.*-(insert|indent)'
+set-option      global idle_timeout 300
+set-option      global completers word=buffer
+
+###
+### COMMANDS
+###
+
+alias global bd delete-buffer
+alias global color colorscheme
+alias global qa quit
+alias global qa! quit!
+alias global wqa write-quit
+alias global wqa! write-quit!
+
+# TODO find from dir
+define-command find -override -params 1 \
+    -shell-script-candidates %{ rg --files } \
+    %{ edit %arg{1} }
+
+define-command source-kakrc -hidden -override \
+    -docstring 'Source kakrc' \
+    %{ source "%val{config}/kakrc" }
+
+define-command source-current-file -hidden -override \
+    -docstring 'Source current file' \
+    %{ source %val{buffile} }
+
+define-command reset-completions -override %{
+    set-option window completers word=buffer
+}
+
+define-command toggle-highlighter -override -params .. %{
+    try %{
+        add-highlighter "window/%arg{@}" %arg{@}
+        echo -markup {green} %arg{@}
+    } catch %{
+        remove-highlighter "window/%arg{@}"
+        echo -markup {red} %arg{@}
+    }
+}
+
+define-command toggle-wrap -override %{ 
+    toggle-highlighter wrap -word -indent -marker '» ' 
+}
+
+# define-command toggle-wrap -override %{
+#     toggle-highlighter wrap -word -indent -marker '» '
+#     # try %{ enable-wrap } catch %{ disable-wrap }
+# }
+
+define-command enable-wrap -override %{
+    add-highlighter window/wrap wrap \
+        -word -indent -marker '» '
+}
+
+define-command disable-wrap -override %{
+    remove-highlighter window/wrap 
+}
+
+###
+### HIGHLIGHTERS
+###
+
+add-highlighter -override global/show-whitespaces show-whitespaces \
+    -tab '⍿' -tabpad ' ' -lf ' ' -spc ' ' -nbsp ' '
+
+###
+### HOOKS
+###
+
+hook global FocusIn .* %{
+    set-face window StatusLine 'rgb:ebdbb2,rgb:282828'
+    set-option window modelinefmt '{rgb:ebdbb2,default}%val{bufname} {rgb:999999,default}%val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+
+    # set-face window StatusLine 'rgb:282828,rgb:aaaaaa'
+    # set-option window modelinefmt '{rgb:282828,default}%val{bufname} {rgb:282828,default}%val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+
+    # try %{ enable-wrap }
+}
+
+hook global FocusOut .* %{
+    set-face window StatusLine 'rgb:504945,rgb:181818'
+    set-option window modelinefmt '{rgb:999999,default}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+
+    # set-face window StatusLine 'rgb:666666,rgb:555555'
+    # set-option window modelinefmt '{rgb:666666,default}%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}} %val{client}@%val{session}'
+
+    # try %{ disable-wrap }
+}
+
+###
+### MAPS
+###
+
+try %{ declare-user-mode toggle }
+
+map global user   t ':enter-user-mode toggle<ret>' -docstring 'Toggle'
+map global toggle w ':toggle-wrap<ret>'            -docstring 'Wrap'
+
+try %{ declare-user-mode reload }
+
+map global user   r ':enter-user-mode reload<ret>' -docstring 'Reload'
+map global reload f ':source-current-file<ret>'    -docstring 'Current file'
+map global reload c ':source-kakrc<ret>'           -docstring 'kakrc'
+
+try %{ declare-user-mode find }
+
+map global user f   ':enter-user-mode find<ret>'   -docstring 'Find'
+map global find f   ':find '                       -docstring 'File'
+map global find b   ':buffer '                     -docstring 'Buffer'
+
+map global user l   ':enter-user-mode lsp<ret>'    -docstring 'LSP mode'
+
+map global normal '%' '<c-s>%'
+map global normal '{' '[p;k'
+map global normal '}' ']p;'
+map global normal '#' :comment-line<ret>
+
+map global normal ^ q
+map global normal <a-^> Q
+map global normal q b
+map global normal Q B  
+map global normal <a-q> <a-b>
+map global normal <a-Q> <a-B>
+
+# map global normal = <a-i>
+# map global normal <tab> '<a-;>'
+# map global normal <backspace> 'eval ga'
+
+###
+### FILETYPES
+###
+
+hook global WinSetOption filetype=.* %{
+    expandtab
+
+    set-option buffer tabstop 4
+    set-option buffer indentwidth 4
+    set-option buffer softtabstop 4
+}
+
+hook global WinSetOption filetype=go %{
+    set-option window indentwidth 0 
+    set-option window lsp_auto_highlight_references true
+    set-option window formatcmd goimports
+
+    hook window BufWritePre .* %{ lsp-formatting-sync }
+
+    lsp-enable-window
+    lsp-diagnostic-lines-disable window
+    lsp-inline-diagnostics-disable window
+    
+    remove-highlighter shared/go
+    source "%val{config}/rc/highlight/go.kak"
+}

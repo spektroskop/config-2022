@@ -1,0 +1,5 @@
+#!/bin/bash
+if [ -f ~/.cache/tmux/last-layout ]; then
+	LAYOUT=$(cat ~/.cache/tmux/last-layout)
+	tmux select-layout $LAYOUT
+fi
