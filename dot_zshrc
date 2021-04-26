@@ -1,0 +1,9 @@
+export PATH="$HOME/.local/bin:$HOME/go/bin:$PATH"
+export ERL_AFLAGS='-kernel shell_history enabled -kernel shell_history_file_bytes 1024000'
+export EDITOR='kak'
+export LANG='en_US.UTF-8'
+
+bindkey -e
+eval "$(starship init zsh)"
+source '/Users/alex/.config/broot/launcher/bash/br'
+eval "$(fasd --init auto)"
