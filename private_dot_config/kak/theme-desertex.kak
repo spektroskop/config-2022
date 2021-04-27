@@ -11,7 +11,7 @@ set-face global BufferPadding rgb:282828,default
 
 set-face global StatusLine rgb:282828,rgb:aaaaaa
 set-face global StatusLineMode rgb:282828+b
-set-face global StatusLineInfo rgb:753604
+set-face global StatusLineInfo rgb:753604+b
 set-face global StatusCursor rgb:8f3f71
 set-face global StatusLineValue rgb:282828
 set-face global Prompt rgb:282828
