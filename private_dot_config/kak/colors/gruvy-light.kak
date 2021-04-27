@@ -40,8 +40,8 @@ face global value         ${purple2}
 face global type          ${yellow2}
 face global variable      ${blue2}
 face global module        ${green2}
-face global function      ${fg0}+i
-face global string        ${green2}
+face global function      ${fg0}
+face global string        ${green2}+i
 face global keyword       ${red2}
 face global operator      ${fg0}+b
 face global attribute     ${orange2}
