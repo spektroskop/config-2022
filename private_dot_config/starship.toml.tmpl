@@ -1,0 +1,41 @@
+format = """
+$username\
+$hostname\
+$shlvl\
+$directory\
+$git_status\
+$git_branch\
+$git_commit\
+$git_state\
+$status
+$character
+"""
+
+add_newline = false
+
+[character]
+success_symbol = "[%%](bold #689d6a)"
+error_symbol = "[%%](bold #fb4934)"
+
+[git_status]
+format = '([$all_status$ahead_behind ](bold fg:#8f3f71))'
+diverged = "~"
+behind = "<-"
+ahead = "->"
+deleted = "x"
+conflicted = "-|-"
+
+[git_branch]
+format = "[$branch](bold fg:#427b58) "
+
+[directory]
+style = "bold #076678"
+truncation_length = 2
+[directory.substitutions]
+"~" = {{ .username }}
+
+[username]
+format = "[$user]($style) "
+
+[hostname]
+format = "[$hostname]($style) "
