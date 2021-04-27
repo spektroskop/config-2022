@@ -1,3 +1,5 @@
+colorscheme gruvbox
+
 set-face global Default default,default
 set-face global BufferPadding rgb:504945,default
 set-face global comment rgb:bdae93                                                               

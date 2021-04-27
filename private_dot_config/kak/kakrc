@@ -31,10 +31,8 @@ evaluate-commands %sh{ kcr init kakoune }
 ### COLORS
 ###
 
-colorscheme gruvbox
-
-# source "%val{config}/theme-gray.kak"
-source "%val{config}/theme-dark.kak"
+source "%val{config}/theme-desertex.kak"
+# source "%val{config}/theme-gruvbox-gray.kak"
 
 ###
 ### OPTIONS
