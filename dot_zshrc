@@ -7,3 +7,5 @@ bindkey -e
 
 eval "$(starship init zsh)"
 eval "$(fasd --init auto)"
+
+true
