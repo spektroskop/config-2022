@@ -9,10 +9,10 @@ set-face global Whitespace rgb:3a3a3a+f
 set-face global WrapMarker rgb:504945
 set-face global Reference default,rgba:282828a0
 
-hook global FocusIn .* %{
-    set-face window StatusLine rgb:ebdbb2,rgb:282828
-}
+# hook global FocusIn .* %{
+#     set-face window StatusLine rgb:ebdbb2,rgb:282828
+# }
 
-hook global FocusOut .* %{
-    set-face window StatusLine rgb:504945,rgb:181818
-}
+# hook global FocusOut .* %{
+#     set-face window StatusLine rgb:504945,rgb:181818
+# }

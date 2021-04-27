@@ -1,7 +1,7 @@
 source "%val{config}/theme-gruvbox.kak"
 
-set-face global PrimarySelection rgb:282828,rgb:aaaaaa
-set-face global SecondarySelection rgb:181818,rgb:777777
+set-face global PrimarySelection rgb:282828,rgb:ebdbb2
+set-face global SecondarySelection rgb:181818,rgb:ab9b72
 set-face global StatusLine rgb:282828,rgb:aaaaaa
 set-face global StatusLineMode rgb:282828+b
 set-face global StatusLineInfo rgb:282828
