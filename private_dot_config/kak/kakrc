@@ -29,9 +29,6 @@ plug "kak-lsp/kak-lsp" do %{
 ### COLORS
 ###
 
-# source "%val{config}/theme-desertex.kak"
-# source "%val{config}/theme-gruvbox.kak"
-# source "%val{config}/theme-gruvbox-gray.kak"
 colorscheme gruvy-light
 
 ###
@@ -39,8 +36,7 @@ colorscheme gruvy-light
 ###
 
 declare-option -hidden str common_modeline \
-    '{default}%val{cursor_line}:%val{cursor_char_column} {default}{rgb:ebdbb2,rgb:665c54} %val{bufname} {default}{rgb:ebdbb2,rgb:282828} %val{client}@%val{session} {default}'
-
+    '{rgb:3c3836}%val{cursor_line}:%val{cursor_char_column} {default}{rgb:3c3836+b}%val{bufname}{default}{rgb:427b58} %val{client}@%val{session} {default}'
 
 set-option -add global ui_options ncurses_assistant=none
 set-option -add global ui_options ncurses_status_on_top=true
@@ -69,7 +65,6 @@ alias global qa! quit!
 alias global wqa write-quit
 alias global wqa! write-quit!
 
-# TODO find from dir
 define-command find -override -params 1 \
     -shell-script-candidates %{ rg --files } \
     %{ edit %arg{1} }
@@ -109,6 +104,13 @@ define-command disable-wrap -override %{
     remove-highlighter window/wrap 
 }
 
+define-command window-padding -override %{
+    declare-option line-specs padding_flags
+    set-option window padding_flags %val{timestamp} '1| '
+    try %{ remove-highlighter window/padding }
+    add-highlighter window/padding flag-lines Default padding_flags
+}
+
 ###
 ### HIGHLIGHTERS
 ###
@@ -120,17 +122,7 @@ add-highlighter -override global/show-whitespaces show-whitespaces \
 ### HOOKS
 ###
 
-# hook global FocusIn .* %{
-#     set-option window modelinefmt "{{mode_info}} {{context_info}} %opt{common_modeline}"
-
-#     # try %{ enable-wrap }
-# }
-
-# hook global FocusOut .* %{
-#     set-option window modelinefmt "%opt{common_modeline}"
-
-#     # try %{ disable-wrap }
-# }
+hook global WinCreate .* %{ window-padding }
 
 ###
 ### MAPS
@@ -167,18 +159,12 @@ map global normal Q B
 map global normal <a-q> <a-b>
 map global normal <a-Q> <a-B>
 
-# map global normal = <a-i>
-# map global normal <tab> '<a-;>'
-# map global normal <backspace> 'eval ga'
-
 ###
 ### FILETYPES
 ###
 
 hook global WinSetOption filetype=.* %{
     expandtab
-
-    # toggle-wrap
 
     set-option buffer tabstop 4
     set-option buffer indentwidth 4
