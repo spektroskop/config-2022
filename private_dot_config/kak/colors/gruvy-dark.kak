@@ -38,19 +38,18 @@ orange2="rgb:d65d0e"
 echo "
 
 declare-option -hidden str theme_modeline \
-    '{${fg3}}%val{cursor_line}:%val{cursor_char_column} {default}{${fg3}+b}%val{bufname}{default}{${yellow2}} %val{client}@%val{session} {default}'
+    '{{mode_info}} {{context_info}} {${fg3}}%val{cursor_line}:%val{cursor_char_column} {${fg3}+b}%val{bufname}{default}{${yellow2}} %val{client}@%val{session} '
 
-define-command -override gruvy-active %{
+define-command -hidden -override gruvy-active %{
     set-face window StatusLine default,${bg1}
 }
 
-define-command -override gruvy-inactive %{
+define-command -hidden -override gruvy-inactive %{
     set-face window StatusLine default,${bg0_hard}
 }
 
 hook global -group gruvy FocusIn .* %{ gruvy-active }
 hook global -group gruvy FocusOut .* %{ gruvy-inactive }
-
 
 face global value         ${purple2}
 face global type          ${yellow2}

@@ -38,13 +38,13 @@ orange2="rgb:d65d0e"
 echo "
 
 declare-option -hidden str theme_modeline \
-    '{${fg1}}%val{cursor_line}:%val{cursor_char_column} {default}{${fg1}+b}%val{bufname}{default}{${aqua2}} %val{client}@%val{session} {default}'
+    '{{mode_info}} {{context_info}} {${fg1}}%val{cursor_line}:%val{cursor_char_column} {${fg1}+b}%val{bufname}{default}{${aqua2}} %val{client}@%val{session} '
 
-define-command -override gruvy-active %{
+define-command -hidden -override gruvy-active %{
     set-face window StatusLine ${fg4},${bg1}
 }
 
-define-command -override gruvy-inactive %{
+define-command -hidden -override gruvy-inactive %{
     set-face window StatusLine ${fg4},${bg3}
 }
 

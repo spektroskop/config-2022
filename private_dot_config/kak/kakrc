@@ -46,7 +46,7 @@ set-option      global scrolloff 2,5
 set-option      global autocomplete prompt
 set-option      global tabstop 4
 set-option      global indentwidth 4
-set-option      global modelinefmt "{{mode_info}} {{context_info}} %opt{theme_modeline}"
+set-option      global modelinefmt "%opt{theme_modeline}"
 set-option      global disabled_hooks '.*-(insert|indent)'
 set-option      global idle_timeout 100
 set-option      global completers word=buffer
