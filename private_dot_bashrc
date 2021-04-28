@@ -47,6 +47,8 @@ gnome-setup() {
 
 gnome-setup
 
+source ~/.config/shared-alias.sh
+
 alias k=kubecolor
 export EDITOR='start-kak default'
 alias kak='start-kak default'
