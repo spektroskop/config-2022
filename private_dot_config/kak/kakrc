@@ -29,8 +29,7 @@ plug "kak-lsp/kak-lsp" do %{
 ### COLORS
 ###
 
-colorscheme gruvy-light
-# colorscheme gruvy-dark
+colorscheme gruvy
 
 ###
 ### OPTIONS
