@@ -66,7 +66,8 @@ face global attribute     ${orange2}
 face global comment       ${gray2}+i
 face global documentation comment
 face global meta          ${aqua2}
-face global builtin       ${fg0}+b
+# face global builtin       ${fg0}+b
+face global builtin       ${aqua2}
 
 face global Default default,default
 
