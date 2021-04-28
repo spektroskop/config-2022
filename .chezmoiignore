@@ -1,3 +1,7 @@
-{{ if ne .chezmoi.os "darwin" }}
+{{ if ne .location "home" }}
 .zshrc
+{{ end }}
+{{ if ne .location "work" }}
+.config/systemd/user/kak@.service
+.bashrc
 {{ end }}

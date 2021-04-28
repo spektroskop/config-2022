@@ -1,0 +1,56 @@
+if [ -f /etc/bashrc ]; then
+	source /etc/bashrc
+fi
+
+add_to_path=(
+	$HOME/.local/bin
+	$HOME/bin
+	$HOME/go/bin
+)
+
+for path in "${add_to_path[@]}"; do
+	[ -d $path ] && export PATH="$path:$PATH"
+done
+
+export ERL_AFLAGS="-kernel shell_history enabled"
+export HEX_CACERTS_PATH=/etc/pki/tls/certs/ca-bundle.crt
+npm config set cafile /etc/pki/tls/certs/ca-bundle.crt
+
+gnome-setup() {
+	gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier']"
+	gsettings set org.gnome.desktop.interface enable-animations false
+	gsettings set org.gnome.desktop.wm.keybindings switch-applications "['<Super>Tab']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "['<Shift><Super>Tab']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
+	gsettings set org.gnome.shell.keybindings toggle-application-view "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-1 "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-2 "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-3 "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-4 "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-5 "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-6 "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-7 "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-8 "[]"
+	gsettings set org.gnome.shell.keybindings switch-to-application-9 "[]"
+	gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
+	gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab']"
+	gsettings set org.gnome.mutter.keybindings switch-monitor "[]"
+
+	# evdev:input:*
+	#   KEYBOARD_KEY_ff000002=btn_right
+	#   KEYBOARD_KEY_90002=btn_side
+	gsettings set org.gnome.desktop.peripherals.trackball scroll-wheel-emulation-button 2
+}
+
+gnome-setup
+
+alias k=kubecolor
+export EDITOR='start-kak default'
+alias kak='start-kak default'
+
+source $HOME/.asdf/asdf.sh
+eval "$(starship init bash)"
+source "$HOME/.cargo/env"
