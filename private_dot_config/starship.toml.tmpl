@@ -20,33 +20,38 @@ format = "[$user]($style) "
 format = "[$hostname]($style) "
 
 [character]
-{{ if eq .theme "gruvy-dark" -}}
-success_symbol = "[%](bold #689d6a)"
-error_symbol = "[%](bold #fb4934)"
+{{- if eq .theme "gruvy-dark" }}
+success_symbol = "[❯](bold #689d6a)"
+error_symbol = "[❯](bold #fb4934)"
 {{- else if eq .theme "gruvy-light" }}
-success_symbol = "[%](bold #689d6a)"
-error_symbol = "[%](bold #fb4934)"
+success_symbol = "[❯](bold #689d6a)"
+error_symbol = "[❯](bold #fb4934)"
 {{- else }}
-success_symbol = "[%](bold green)"
-error_symbol = "[%](bold red)"
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
 {{- end }}
 
 [git_status]
-{{ if eq .theme "gruvy-dark" -}}
+{{- if eq .theme "gruvy-dark" }}
 format = '([$all_status$ahead_behind ](bold fg:#d3869b))'
 {{- else if eq .theme "gruvy-light" }}
 format = '([$all_status$ahead_behind ](bold fg:#8f3f71))'
 {{- else }}
 format = '([$all_status$ahead_behind ](bold magenta))'
 {{- end }}
-diverged = "~"
-behind = "<-"
-ahead = "->"
+ahead = ">"
+behind = "<"
+conflicted = "/"
 deleted = "x"
-conflicted = "-|-"
+diverged = "~"
+modified = "!"
+renamed = "»"
+staged = "+"
+stashed = "$"
+untracked = "?"
 
 [git_branch]
-{{ if eq .theme "gruvy-dark" -}}
+{{- if eq .theme "gruvy-dark" }}
 format = "[$branch](bold fg:#8ec07c) "
 {{- else if eq .theme "gruvy-light" }}
 format = "[$branch](bold fg:#427b58) "
@@ -55,7 +60,7 @@ format = "[$branch](bold cyan) "
 {{- end }}
 
 [directory]
-{{ if eq .theme "gruvy-dark" -}}
+{{- if eq .theme "gruvy-dark" }}
 style = "bold #83a598" 
 {{- else if eq .theme "gruvy-light" }}
 style = "bold #076678"
