@@ -1,0 +1,1 @@
+alias nnn="nnn -e"

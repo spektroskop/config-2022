@@ -3,7 +3,11 @@ export ERL_AFLAGS='-kernel shell_history enabled -kernel shell_history_file_byte
 export EDITOR='kak'
 export LANG='en_US.UTF-8'
 
+source ~/.config/shared-alias.sh
+
 bindkey -e
+
 eval "$(starship init zsh)"
-source '/Users/alex/.config/broot/launcher/bash/br'
 eval "$(fasd --init auto)"
+
+true

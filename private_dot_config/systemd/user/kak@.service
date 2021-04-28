@@ -1,0 +1,9 @@
+[Unit]
+Description=%i@kakoune
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/kak -s %i -d
+
+[Install]
+WantedBy=default.target
