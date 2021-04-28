@@ -4,41 +4,41 @@ alpha() {
     echo "$(echo $1|sed 's,rgb,rgba,')$2"
 }
 
-bg0_soft="rgb:f2e5bc"
-bg0_medium="rgb:fbf1c7"
-bg0_hard="rgb:f9f5d7"
-bg1="rgb:ebdbb2" 
-bg2="rgb:d5c4a1"
-bg3="rgb:bdae93"
-bg4="rgb:a89984"
+bg0_soft="rgb:32302f"
+bg0_medium="rgb:282828"
+bg0_hard="rgb:1d2021"
+bg1="rgb:3c3836" 
+bg2="rgb:504945"
+bg3="rgb:665c54"
+bg4="rgb:7c6f64"
 
-fg0="rgb:282828"
-fg1="rgb:3c3836"
-fg2="rgb:504945"
-fg3="rgb:665c54"
-fg4="rgb:7c6f64"
+fg0="rgb:fbf1c7"
+fg1="rgb:ebdbb2"
+fg2="rgb:d5c4a1"
+fg3="rgb:bdae93"
+fg4="rgb:a89984"
 
 red1="rgb:cc241d"
-red2="rgb:9d0006"
+red2="rgb:fb4934"
 green1="rgb:98971a"
-green2="rgb:79740e"
+green2="rgb:b8bb26"
 yellow1="rgb:d79921"
-yellow2="rgb:b57614"
+yellow2="rgb:fabd2f"
 blue1="rgb:458588"
-blue2="rgb:076678"
+blue2="rgb:83a598"
 purple1="rgb:b16286"
-purple2="rgb:8f3f71"
+purple2="rgb:d3869b"
 aqua1="rgb:689d6a"
-aqua2="rgb:427b58"
+aqua2="rgb:8ec07c"
 gray1="rgb:928374"
-gray2="rgb:7c6f64"
-orange1="rgb:af3a03"
+gray2="rgb:a89984"
+orange1="rgb:fe8019"
 orange2="rgb:d65d0e"
 
 echo "
 
 declare-option -hidden str theme_modeline \
-    '{${fg1}}%val{cursor_line}:%val{cursor_char_column} {default}{${fg1}+b}%val{bufname}{default}{${aqua2}} %val{client}@%val{session} {default}'
+    '{${fg3}}%val{cursor_line}:%val{cursor_char_column} {default}{${fg3}+b}%val{bufname}{default}{${yellow2}} %val{client}@%val{session} {default}'
 
 face global value         ${purple2}
 face global type          ${yellow2}
@@ -61,8 +61,8 @@ face global SecondarySelection ${bg0_hard},${blue1}+g
 
 face global PrimaryCursor ${bg0_hard},${fg0}+fg
 face global SecondaryCursor ${bg0_hard},${fg3}+fg
-face global PrimaryCursorEol ${bg0_hard},${blue2}+fg   # TODO forskjellig fra selection
-face global SecondaryCursorEol ${bg0_hard},${blue1}+fg # TODO forskjellig fra selection
+face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg
+face global SecondaryCursorEol ${bg0_hard},${yellow1}+fg
 
 face global MenuInfo ${bg0_hard}
 face global MenuForeground ${bg2},${blue2}

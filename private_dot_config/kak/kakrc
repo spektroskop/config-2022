@@ -30,13 +30,21 @@ plug "kak-lsp/kak-lsp" do %{
 ###
 
 colorscheme gruvy-light
+# colorscheme gruvy-dark
 
 ###
 ### OPTIONS
 ###
 
-declare-option -hidden str common_modeline \
-    '{rgb:3c3836}%val{cursor_line}:%val{cursor_char_column} {default}{rgb:3c3836+b}%val{bufname}{default}{rgb:427b58} %val{client}@%val{session} {default}'
+# DARK
+
+# declare-option -hidden str common_modeline \
+    # '{rgb:3c3836}%val{cursor_line}:%val{cursor_char_column} {default}{rgb:3c3836+b}%val{bufname}{default}{rgb:427b58} %val{client}@%val{session} {default}'
+
+# LIGHT
+
+# declare-option -hidden str common_modeline \
+#     '{rgb:bdae93}%val{cursor_line}:%val{cursor_char_column} {default}{rgb:bdae93+b}%val{bufname}{default}{rgb:fabd2f} %val{client}@%val{session} {default}'
 
 set-option -add global ui_options ncurses_assistant=none
 set-option -add global ui_options ncurses_status_on_top=false
@@ -49,7 +57,7 @@ set-option      global scrolloff 2,5
 set-option      global autocomplete prompt
 set-option      global tabstop 4
 set-option      global indentwidth 4
-set-option      global modelinefmt "{{mode_info}} {{context_info}} %opt{common_modeline}"
+set-option      global modelinefmt "{{mode_info}} {{context_info}} %opt{theme_modeline}"
 set-option      global disabled_hooks '.*-(insert|indent)'
 set-option      global idle_timeout 100
 set-option      global completers word=buffer
@@ -59,6 +67,7 @@ set-option      global completers word=buffer
 ###
 
 alias global bd delete-buffer
+alias global bd! delete-buffer!
 alias global color colorscheme
 alias global qa quit
 alias global qa! quit!
