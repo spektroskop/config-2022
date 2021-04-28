@@ -67,6 +67,8 @@ define-command find -override -params 1 \
     -shell-script-candidates %{ rg --files } \
     %{ edit %arg{1} }
 
+alias global f find
+
 define-command source-kakrc -hidden -override \
     -docstring 'Source kakrc' \
     %{ source "%val{config}/kakrc" }
