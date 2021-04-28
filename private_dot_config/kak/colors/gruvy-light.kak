@@ -40,8 +40,6 @@ echo "
 declare-option -hidden str theme_modeline \
     '{${fg1}}%val{cursor_line}:%val{cursor_char_column} {default}{${fg1}+b}%val{bufname}{default}{${aqua2}} %val{client}@%val{session} {default}'
 
-remove-hooks window gruvy
-
 define-command -override gruvy-active %{
     set-face window StatusLine ${fg4},${bg1}
 }
@@ -52,7 +50,6 @@ define-command -override gruvy-inactive %{
 
 hook global -group gruvy FocusIn .* %{ gruvy-active }
 hook global -group gruvy FocusOut .* %{ gruvy-inactive }
-gruvy-active
 
 face global value         ${purple2}
 face global type          ${yellow2}
