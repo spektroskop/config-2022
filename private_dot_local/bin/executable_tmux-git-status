@@ -1,0 +1,17 @@
+#!/bin/bash
+set -u
+
+status_style=$1
+branch_style=$2
+raw_status=$(git status --porcelain)
+status=""
+echo $raw_status
+[ $(git stash list | wc -l | xargs) -ne 0 ] && status="\$$status"
+echo "$raw_status" | grep -q "^ D" && status="${status}D"
+echo "$raw_status" | grep -q "^D " && status="${status}d"
+echo "$raw_status" | grep -q "^ M" && status="${status}m"
+echo "$raw_status" | grep -q "^M " && status="${status}M"
+echo "$raw_status" | grep -q "^??" && status="${status}?"
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+echo "#[$status_style]$status#[default] #[$branch_style]$branch#[default]"
