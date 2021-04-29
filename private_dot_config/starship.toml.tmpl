@@ -64,11 +64,11 @@ format = "[$branch](bold cyan) "
 
 [directory]
 {{- if eq .theme "gruvy-dark" }}
-style = "bold #83a598" 
+style = "bold #83a598"
 {{- else if eq .theme "gruvy-light" }}
 style = "bold #076678"
 {{- else }}
-style = "bold blue" 
+style = "bold blue"
 {{- end }}
 truncation_length = 2
 
@@ -77,5 +77,5 @@ truncation_length = 2
 
 [shlvl]
 disabled = false
-format = "^$shlvl"
+format = "[^](bold fg:#b57614)"
 threshold = 4
