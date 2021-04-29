@@ -8,17 +8,6 @@ import (
 
 var ratio = flag.Float64("ratio", 1.618, "")
 
-func Foo(a, b int) (_ int, err error) {
-	return 0, nil
-}
-
-func Bar(a, b int) (
-	int,
-	error,
-) {
-	return 0, nil
-}
-
 func main() {
 	flag.Parse()
 

@@ -19,7 +19,7 @@ add-highlighter shared/go/code/ regex \b[+-]?\d+(\.\d+)?\b 0:value
 add-highlighter shared/go/code/ regex \b(true|false|nil|iota)\b 0:value
 add-highlighter shared/go/code/ regex \b(switch|case|default|defer|continue|break|range|type|struct|package|import|const|var|func|if|else|for|return)\b 0:keyword
 add-highlighter shared/go/code/ regex \b([\w._]+)\( 1:function
-add-highlighter shared/go/code/ regex \b(bool|int|float64|string)\b 0:type
+add-highlighter shared/go/code/ regex \b(bool|int|float64|string|rune|byte)\b 0:type
 add-highlighter shared/go/code/ regex \b(\[\]\w+)\b 0:type
 add-highlighter shared/go/code/ regex \bvar\s+(\w+(,\s+\w+)*) 1:variable
 add-highlighter shared/go/code/ regex \b(\w+(,\s+\w+)*)\s+(:?=\s) 1:variable

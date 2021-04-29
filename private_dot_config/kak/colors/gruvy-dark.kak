@@ -41,11 +41,21 @@ declare-option -hidden str theme_modeline \
     '{{mode_info}} {{context_info}} {${fg3}}%val{cursor_line}:%val{cursor_char_column} {${fg3}+b}%val{bufname}{default}{${yellow2}} %val{client}@%val{session} '
 
 define-command -hidden -override gruvy-active %{
+    set-face window Information ${fg1},${bg1}
     set-face window StatusLine default,${bg1}
+    set-face window StatusLineInfo ${purple2}
+    set-face window gruvyBufname ${fg3}+b
+    set-face window gruvyClient ${yellow2}
+    set-face window gruvyCursor ${fg3}
 }
 
 define-command -hidden -override gruvy-inactive %{
+    set-face window Information default,${bg0_hard}
     set-face window StatusLine default,${bg0_hard}
+    set-face window StatusLineInfo default
+    set-face window gruvyBufname default
+    set-face window gruvyClient default
+    set-face window gruvyCursor default
 }
 
 hook global -group gruvy FocusIn .* %{ gruvy-active }
