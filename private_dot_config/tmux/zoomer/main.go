@@ -4,9 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"os/exec"
+	"strings"
 )
 
 var ratio = flag.Float64("ratio", 1.618, "")
+var skipSuffix = flag.String("skip", "~", "")
+var force = flag.Bool("force", false, "")
 
 func main() {
 	flag.Parse()
@@ -16,7 +19,7 @@ func main() {
 		panic(err)
 	}
 
-	if activeWindow.Zoomed {
+	if activeWindow.Zoomed || strings.HasSuffix(activeWindow.Name, "~") {
 		return
 	}
 
