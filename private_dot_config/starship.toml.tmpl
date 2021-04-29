@@ -1,12 +1,12 @@
 format = """
 $username\
 $hostname\
-$shlvl\
 $directory\
 $git_status\
 $git_branch\
 $git_commit\
 $git_state\
+$shlvl\
 $status
 $character
 """
@@ -50,7 +50,7 @@ diverged = "~"
 modified = "!"
 renamed = "»"
 staged = "+"
-stashed = "$"
+# stashed = "$"
 untracked = "?"
 
 [git_branch]
@@ -75,3 +75,7 @@ truncation_length = 2
 [directory.substitutions]
 "~" = "{{ .username }}"
 
+[shlvl]
+disabled = false
+format = "<$shlvl>"
+threshold = 4
