@@ -200,7 +200,8 @@ hook global WinSetOption filetype=go %{
     set-option window lsp_auto_highlight_references true
     set-option window formatcmd goimports
 
-    hook window BufWritePre .* %{ lsp-formatting-sync }
+    # hook window BufWritePre .* %{ lsp-formatting-sync }
+    hook window BufWritePre .* %{ format-buffer }
 
     lsp-enable-window
     lsp-diagnostic-lines-disable window
