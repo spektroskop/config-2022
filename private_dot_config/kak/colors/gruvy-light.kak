@@ -7,7 +7,7 @@ alpha() {
 bg0_soft="rgb:f2e5bc"
 bg0_medium="rgb:fbf1c7"
 bg0_hard="rgb:f9f5d7"
-bg1="rgb:ebdbb2" 
+bg1="rgb:ebdbb2"
 bg2="rgb:d5c4a1"
 bg3="rgb:bdae93"
 bg4="rgb:a89984"
@@ -38,7 +38,7 @@ orange2="rgb:d65d0e"
 echo "
 
 declare-option -hidden str theme_modeline \
-    '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%val{bufname}{gruvyClient} %val{client}@%val{session} '
+    '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%opt{bufname}{gruvyClient} %val{client}@%val{session} '
 
 define-command -hidden -override gruvy-active %{
     set-face window Information ${fg1},${bg1}
@@ -117,7 +117,7 @@ set-face global Prompt ${yellow2}
 
 set-face global BufferPadding ${bg4}
 set-face global MatchingChar default,${bg1}
-set-face global Whitespace ${bg3}+f
+set-face global Whitespace ${bg2}+f
 set-face global WrapMarker ${fg4}
 
 "

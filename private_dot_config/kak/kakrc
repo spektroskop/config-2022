@@ -1,6 +1,6 @@
 ###
 ### PLUGINS
-### 
+###
 
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 
@@ -10,6 +10,7 @@ plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option buffer softtabstop 4
     expandtab
 } config %{
+    hook global WinSetOption filetype=makefile noexpandtab
     hook global WinSetOption filetype=go noexpandtab
 }
 
@@ -23,7 +24,17 @@ plug "Delapouite/kakoune-cd" config %{
 
 plug "kak-lsp/kak-lsp" do %{
     cargo install --locked --force --path .
-} 
+}
+
+declare-option -hidden str bufname
+define-command -hidden -override shorten-bufname %{
+    set-option buffer bufname %sh{
+        printf "%s\n" "${kak_bufname}" | perl -pe 's:(?(?<=/)|(?<=^))([^\p{Letter}\p{Digit}]+.|[^/]).+?/:\1/:g'
+    }
+}
+hook global WinDisplay .* shorten-bufname
+hook global BufWritePost .* shorten-bufname
+# hook global NormalIdle .* shorten-bufname
 
 ###
 ### COLORS
@@ -63,6 +74,10 @@ alias global qa! quit!
 alias global wqa write-quit
 alias global wqa! write-quit!
 
+define-command strip-whitespace -override %{
+    try %{ execute-keys -draft \%s\h+$<ret>d }
+}
+
 define-command find -override -params 1 \
     -shell-script-candidates %{ rg --files } \
     %{ edit %arg{1} }
@@ -70,11 +85,9 @@ define-command find -override -params 1 \
 alias global f find
 
 define-command source-kakrc -hidden -override \
-    -docstring 'Source kakrc' \
     %{ source "%val{config}/kakrc" }
 
 define-command source-current-file -hidden -override \
-    -docstring 'Source current file' \
     %{ source %val{buffile} }
 
 define-command reset-completions -override %{
@@ -91,8 +104,8 @@ define-command toggle-highlighter -override -params .. %{
     }
 }
 
-define-command toggle-wrap -override %{ 
-    toggle-highlighter wrap -word -indent -marker '» ' 
+define-command toggle-wrap -override %{
+    toggle-highlighter wrap -word -indent -marker '» '
 }
 
 define-command enable-wrap -override %{
@@ -101,7 +114,7 @@ define-command enable-wrap -override %{
 }
 
 define-command disable-wrap -override %{
-    remove-highlighter window/wrap 
+    remove-highlighter window/wrap
 }
 
 define-command window-padding -override %{
@@ -111,18 +124,27 @@ define-command window-padding -override %{
     add-highlighter window/padding flag-lines Default padding_flags
 }
 
+define-command restart-lsp -override %{
+    lsp-stop; lsp-start
+}
+
 ###
 ### HIGHLIGHTERS
 ###
 
 add-highlighter -override global/show-whitespaces show-whitespaces \
-    -tab '⍿' -tabpad ' ' -lf ' ' -spc ' ' -nbsp ' '
+    -tab '│' -tabpad ' ' -lf ' ' -spc ' ' -nbsp ' '
+    # -tab '⍿' -tabpad ' ' -lf ' ' -spc ' ' -nbsp ' '
+
+add-highlighter -override global/trailing-whitespace regex '\h+$' 0:Information
 
 ###
 ### HOOKS
 ###
 
 hook global WinCreate .* %{ window-padding }
+
+hook global BufWritePre .* %{ strip-whitespace }
 
 ###
 ### MAPS
@@ -144,8 +166,8 @@ try %{ declare-user-mode find }
 map global user f   ':enter-user-mode find<ret>'   -docstring 'Find'
 map global find f   ':find '                       -docstring 'File'
 map global find b   ':buffer '                     -docstring 'Buffer'
-
 map global user l   ':enter-user-mode lsp<ret>'    -docstring 'LSP mode'
+map global user /   '/(?i)'                        -docstring 'Case-insensitive search'
 
 map global normal '%' '<c-s>%'
 map global normal '{' '[p;k'
@@ -155,7 +177,7 @@ map global normal '#' :comment-line<ret>
 map global normal ^ q
 map global normal <a-^> Q
 map global normal q b
-map global normal Q B  
+map global normal Q B
 map global normal <a-q> <a-b>
 map global normal <a-Q> <a-B>
 
@@ -172,7 +194,7 @@ hook global WinSetOption filetype=.* %{
 }
 
 hook global WinSetOption filetype=go %{
-    set-option window indentwidth 0 
+    set-option window indentwidth 0
     set-option window lsp_auto_highlight_references true
     set-option window formatcmd goimports
 
@@ -181,7 +203,7 @@ hook global WinSetOption filetype=go %{
     lsp-enable-window
     lsp-diagnostic-lines-disable window
     lsp-inline-diagnostics-disable window
-    
+
     remove-highlighter shared/go
     source "%val{config}/rc/highlight/go.kak"
 }
