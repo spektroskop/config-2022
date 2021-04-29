@@ -74,9 +74,9 @@ alias global qa! quit!
 alias global wqa write-quit
 alias global wqa! write-quit!
 
-define-command strip-whitespace -override %{
-    try %{ execute-keys -draft \%s\h+$<ret>d }
-}
+# define-command strip-whitespace -override %{
+#     try %{ execute-keys -draft \%s\h+$<ret>d }
+# }
 
 define-command find -override -params 1 \
     -shell-script-candidates %{ rg --files } \
@@ -144,7 +144,8 @@ add-highlighter -override global/trailing-whitespace regex '\h+$' 0:Information
 
 hook global WinCreate .* %{ window-padding }
 
-hook global BufWritePre .* %{ strip-whitespace }
+# Ikke trygg? Endre til en som stripper linja når man går ut av InsertMode
+# hook global BufWritePre .* %{ strip-whitespace }
 
 ###
 ### MAPS
