@@ -78,4 +78,8 @@ truncation_length = 2
 [shlvl]
 disabled = false
 format = "[^](bold fg:#b57614)"
+{{ if eq .location "home" -}}
+threshold = 3
+{{- else if eq .locatio "work" }}
 threshold = 4
+{{- end }}
