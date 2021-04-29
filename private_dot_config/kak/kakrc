@@ -74,9 +74,9 @@ alias global qa! quit!
 alias global wqa write-quit
 alias global wqa! write-quit!
 
-# define-command strip-whitespace -override %{
-#     try %{ execute-keys -draft \%s\h+$<ret>d }
-# }
+define-command remove-whitespace -override %{
+    try %{ execute-keys -draft \%s\h+$<ret>d }
+}
 
 define-command find -override -params 1 \
     -shell-script-candidates %{ rg --files } \
@@ -145,7 +145,7 @@ add-highlighter -override global/trailing-whitespace regex '\h+$' 0:Information
 hook global WinCreate .* %{ window-padding }
 
 # Ikke trygg? Endre til en som stripper linja når man går ut av InsertMode
-# hook global BufWritePre .* %{ strip-whitespace }
+# hook global BufWritePre .* %{ remove-whitespace }
 
 ###
 ### MAPS
@@ -169,6 +169,7 @@ map global find f   ':find '                       -docstring 'File'
 map global find b   ':buffer '                     -docstring 'Buffer'
 map global user l   ':enter-user-mode lsp<ret>'    -docstring 'LSP mode'
 map global user /   '/(?i)'                        -docstring 'Case-insensitive search'
+map global user w   ':remove-whitespace<ret>'       -docstring 'Remove trailing whitespace'
 
 map global normal '%' '<c-s>%'
 map global normal '{' '[p;k'
