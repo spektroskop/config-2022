@@ -4,5 +4,6 @@ if [ -z $name ]; then
 	kak $*
 else
 	shift
-	kak -clear && kak -l | grep -q $name && kak -c $name $* || kak -s $name $*
+	kak -clear
+	kak -l | grep -q $name && kak -c $name $* || kak -s $name $*
 fi

@@ -1,18 +1,19 @@
 #!/bin/bash
 set -u
+status_style=$1 ; branch_style=$2
 
-status_style=$1
-branch_style=$2
-status=$(git status --porcelain)
-stash=$(git stash list | wc -l | xargs)
-branch=$(git rev-parse --abbrev-ref HEAD)
 flags=""
-
-[ $stash -ne 0 ]            && flags="${flags}S"
+stash=$(git stash list | wc -l | xargs)
+status=$(git status --porcelain)
+test $stash -ne 0 && flags="${flags}S"
 grep -q "^ D" <<< "$status" && flags="${flags}d"
 grep -q "^D " <<< "$status" && flags="${flags}D"
 grep -q "^M " <<< "$status" && flags="${flags}M"
 grep -q "^ M" <<< "$status" && flags="${flags}m"
 grep -q "^??" <<< "$status" && flags="${flags}?"
+flags="#[$status_style]$flags#[default]"
 
-echo "#[$status_style]$flags#[default] #[$branch_style]$branch#[default]"
+branch=$(git rev-parse --abbrev-ref HEAD)
+branch="#[$branch_style]$branch#[default]"
+
+echo "$flags $branch"
