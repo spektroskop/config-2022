@@ -22,13 +22,16 @@ format = "[$hostname]($style) "
 [character]
 {{- if eq .theme "gruvy-dark" }}
 success_symbol = "[❯](bold #689d6a)"
-error_symbol = "[❯](bold #fb4934)"
+error_symbol = "[❯](bold #689d6a)"
+# error_symbol = "[❯](bold #fb4934)"
 {{- else if eq .theme "gruvy-light" }}
 success_symbol = "[❯](bold #689d6a)"
-error_symbol = "[❯](bold #fb4934)"
+error_symbol = "[❯](bold #689d6a)"
+# error_symbol = "[❯](bold #fb4934)"
 {{- else }}
 success_symbol = "[❯](bold green)"
-error_symbol = "[❯](bold red)"
+error_symbol = "[❯](bold green)"
+# error_symbol = "[❯](bold red)"
 {{- end }}
 
 [git_status]
