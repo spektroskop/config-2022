@@ -61,51 +61,51 @@ define-command -hidden -override gruvy-inactive %{
 hook global -group gruvy FocusIn .* %{ gruvy-active }
 hook global -group gruvy FocusOut .* %{ gruvy-inactive }
 
-face global value         ${purple2}
-face global type          ${yellow2}
-face global variable      ${blue2}
-face global module        ${green2}
-face global function      ${fg0}
-face global string        ${green2}+i
-face global keyword       ${red2}
-face global operator      ${fg0}+b
-face global attribute     ${orange2}
-face global comment       ${gray2}+i
-face global documentation comment
-face global meta          ${aqua2}
-face global builtin       ${fg0}+b
+set-face global value         ${purple2}
+set-face global type          ${yellow2}
+set-face global variable      ${blue2}
+set-face global module        ${green2}
+set-face global function      ${fg0}
+set-face global string        ${green2}+i
+set-face global keyword       ${red2}
+set-face global operator      ${fg0}+b
+set-face global attribute     ${orange2}
+set-face global comment       ${gray2}+i
+set-face global documentation comment
+set-face global meta          ${aqua2}
+set-face global builtin       ${fg0}+b
 
-face global Default default,default
+set-face global Default default,default
 
-face global PrimarySelection ${bg0_hard},${blue2}+g
-face global SecondarySelection ${bg0_hard},${blue1}+g
+set-face global PrimarySelection ${bg0_hard},${blue2}+g
+set-face global SecondarySelection ${bg0_hard},${blue1}+g
 
-face global PrimaryCursor ${bg0_hard},${fg0}+fg
-face global SecondaryCursor ${bg0_hard},${fg3}+fg
-face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg
-face global SecondaryCursorEol ${bg0_hard},${yellow1}+fg
+set-face global PrimaryCursor ${bg0_hard},${fg0}+fg
+set-face global SecondaryCursor ${bg0_hard},${fg3}+fg
+set-face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg
+set-face global SecondaryCursorEol ${bg0_hard},${yellow1}+fg
 
-face global MenuInfo ${bg0_hard}
-face global MenuForeground ${bg2},${blue2}
-face global MenuBackground ${fg0},${bg2}
+set-face global MenuInfo ${bg0_hard}
+set-face global MenuForeground ${bg2},${blue2}
+set-face global MenuBackground ${fg0},${bg2}
 
-face global LineNumbers ${bg4}
-face global LineNumberCursor ${yellow2},${bg1}
-face global LineNumbersWrapped ${bg1}
+set-face global LineNumbers ${bg4}
+set-face global LineNumberCursor ${yellow2},${bg1}
+set-face global LineNumbersWrapped ${bg1}
 
-face global Information ${fg1},${bg1}
-face global Error ${bg0_hard},${red1}
+set-face global Information ${fg1},${bg1}
+set-face global Error ${bg0_hard},${red1}
 
-face global StatusLine default,${bg1}
-face global StatusLineMode ${blue2}
-face global StatusLineInfo ${purple2}
-face global StatusLineValue ${red2}
-face global StatusCursor ${bg0_hard},${fg0}
-face global Prompt ${yellow2}
+set-face global StatusLine default,${bg1}
+set-face global StatusLineMode ${yellow2}
+set-face global StatusLineInfo ${purple2}
+set-face global StatusLineValue ${purple2}
+set-face global StatusCursor ${bg0_hard},${fg0}
+set-face global Prompt ${yellow2}
 
-face global BufferPadding ${bg4}
-face global MatchingChar default,${bg1}
-face global Whitespace ${bg3}+f
-face global WrapMarker ${fg4}
+set-face global BufferPadding ${bg4}
+set-face global MatchingChar default,${bg1}
+set-face global Whitespace ${bg3}+f
+set-face global WrapMarker ${fg4}
 "
 }
