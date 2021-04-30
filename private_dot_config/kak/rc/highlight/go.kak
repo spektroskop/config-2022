@@ -28,12 +28,12 @@ evaluate-commands %sh{
     oct='0[oO][0-7](_?[0-7]+)*'
     hex='0[xX][0-9a-fA-F](_?[0-9a-fA-F]+)*'
     id='[^\W\d][\w]*'
-    vars="($id(,\h+$id)*)"
+    vars="($id(,\h*$id)*)"
 
     values=$(join true false nil iota)
-    keywords=$(join package import const var type struct func defer return
+    keywords=$(join package import const var type struct func defer return \
         if else for range continue break switch case default)
-    types=$(join map error interface bool string byte rune int int8 int16 int32 int64
+    types=$(join map error interface bool string byte rune int int8 int16 int32 int64 \
         uint uint8 uint16 uint32 uint64 uintptr float32 float64 complex64 complex128)
 
     printf %s "
