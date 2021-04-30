@@ -1,18 +1,17 @@
 add-highlighter shared/go regions
 
-add-highlighter shared/go/double_string region '"' '"' group
-add-highlighter shared/go/double_string/ fill string
-add-highlighter shared/go/double_string/ regex \%#?[%a-zA-Z0-9] 0:meta
-add-highlighter shared/go/double_string/ regex \\[a-zA-Z] 0:meta
+add-highlighter shared/go/string region '"' '"' group
+add-highlighter shared/go/string/ fill string
+add-highlighter shared/go/string/ regex \%#?[%a-zA-Z0-9] 0:meta
+add-highlighter shared/go/string/ regex \\[a-zA-Z] 0:meta
 
-add-highlighter shared/go/back_string region '`' '`' group
-add-highlighter shared/go/back_string/ fill string
-add-highlighter shared/go/back_string/ regex \%#?[%a-zA-Z0-9] 0:meta
-add-highlighter shared/go/back_string/ regex \\[a-zA-Z]  0:meta
+add-highlighter shared/go/raw_string region '`' '`' group
+add-highlighter shared/go/raw_string/ fill string
+add-highlighter shared/go/raw_string/ regex \%#?[%a-zA-Z0-9] 0:meta
 
-add-highlighter shared/go/single_string region "'" "'" group
-add-highlighter shared/go/single_string/ regex '.' 0:meta
-add-highlighter shared/go/single_string/ regex ('.)([^'$]*) 1:meta 2:Error
+add-highlighter shared/go/rune region "'" "'" group
+add-highlighter shared/go/rune/ regex '.' 0:meta
+add-highlighter shared/go/rune/ regex ('.)([^'$]*) 1:meta 2:Error
 
 add-highlighter shared/go/block_comment region /\* \*/ fill comment
 add-highlighter shared/go/line_comment  region '//' $  fill comment
@@ -22,7 +21,7 @@ add-highlighter shared/go/code default-region group
 evaluate-commands %sh{
     join() { local IFS="|"; echo "$*"; }
 
-    # TODO float, complex
+    # TODO: float, complex
     dec='[0-9]+'
     bin='0[bB][10](_?[10]+)*'
     oct='0[oO][0-7](_?[0-7]+)*'
