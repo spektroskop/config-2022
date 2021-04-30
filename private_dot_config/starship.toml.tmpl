@@ -7,6 +7,7 @@ $git_branch\
 $git_commit\
 $git_state\
 $shlvl\
+${custom.kakoune}\
 $status
 $character
 """
@@ -83,3 +84,17 @@ threshold = 3
 {{- else if eq .locatio "work" }}
 threshold = 4
 {{- end }}
+
+[custom.kakoune]
+command = """ echo "$KAKOUNE_CLIENT@$KAKOUNE_SESSION" """
+when = 'test $KAKOUNE_SESSION'
+shell = ['sh']
+# style = 'green'
+{{- if eq .theme "gruvy-dark" }}
+style = "fg:#98971a"
+{{- else if eq .theme "gruvy-light" }}
+style = "fg:#79740e"
+{{- else }}
+style = "cyan"
+{{- end }}
+format = '[$symbol $output]($style)'

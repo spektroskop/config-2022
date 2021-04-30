@@ -74,6 +74,16 @@ alias global qa! quit!
 alias global wqa write-quit
 alias global wqa! write-quit!
 
+define-command connect -override -params 1.. -command-completion %{
+    %arg{1} sh -c %{
+        export KAKOUNE_SESSION=$1
+        export KAKOUNE_CLIENT=$2
+        shift 3
+        [ $# = 0 ] && set "$SHELL"
+        "$@"
+    } -- %val{session} %val{client} %arg{@}
+}
+
 define-command remove-whitespace -override %{
     try %{ execute-keys -draft \%s\h+$<ret>d }
 }
