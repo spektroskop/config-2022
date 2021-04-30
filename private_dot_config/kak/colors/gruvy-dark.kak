@@ -94,7 +94,7 @@ set-face global Default default,default
 set-face global PrimarySelection $(alpha $bg0_hard a0),${blue2}+g
 set-face global SecondarySelection $(alpha $bg0_hard a0),${blue1}+g
 
-et-face global PrimaryCursor ${bg0_hard},${fg0}+fg
+set-face global PrimaryCursor ${bg0_hard},${fg0}+fg
 set-face global SecondaryCursor ${bg0_hard},${fg3}+fg
 set-face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg
 set-face global SecondaryCursorEol ${bg0_hard},${yellow1}+fg
