@@ -23,9 +23,9 @@ evaluate-commands %sh{
 
     # TODO: float, complex
     dec='[0-9]+'
-    bin='0[bB][10](_?[10]+)*'
-    oct='0[oO][0-7](_?[0-7]+)*'
-    hex='0[xX][0-9a-fA-F](_?[0-9a-fA-F]+)*'
+    bin='0[bB]_?[10](_?[10]+)*'
+    oct='0[oO]_?[0-7](_?[0-7]+)*'
+    hex='0[xX]_?[0-9a-fA-F](_?[0-9a-fA-F]+)*'
     id='[^\W\d][\w]*'
     vars="($id(,\h*$id)*)"
 
