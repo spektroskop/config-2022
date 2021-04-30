@@ -1,6 +1,6 @@
 add-highlighter shared/go regions
 
-add-highlighter shared/go/string region '"' '"' group
+add-highlighter shared/go/string region '"' '"|$' group
 add-highlighter shared/go/string/ fill string
 add-highlighter shared/go/string/ regex \%#?[%a-zA-Z0-9] 0:meta
 add-highlighter shared/go/string/ regex \\[a-zA-Z] 0:meta
@@ -9,7 +9,7 @@ add-highlighter shared/go/raw_string region '`' '`' group
 add-highlighter shared/go/raw_string/ fill string
 add-highlighter shared/go/raw_string/ regex \%#?[%a-zA-Z0-9] 0:meta
 
-add-highlighter shared/go/rune region "'" "'" group
+add-highlighter shared/go/rune region "'" "'|$" group
 add-highlighter shared/go/rune/ regex '.' 0:meta
 add-highlighter shared/go/rune/ regex ('.)([^'$]*) 1:meta 2:Error
 
