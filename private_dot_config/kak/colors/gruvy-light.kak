@@ -47,7 +47,7 @@ define-command -hidden -override gruvy-active %{
     set-face window gruvyBufname ${fg1}+b
     set-face window gruvyClient ${blue2}
     set-face window gruvyCursor ${fg1}
-    set-face global PrimaryCursor ${bg0_hard},${fg0}+fg
+    set-face window PrimaryCursor ${bg0_hard},${fg0}+fg
 }
 
 define-command -hidden -override gruvy-inactive %{
@@ -57,7 +57,7 @@ define-command -hidden -override gruvy-inactive %{
     set-face window gruvyBufname ${fg2}
     set-face window gruvyClient ${fg2}
     set-face window gruvyCursor ${fg2}
-    set-face global PrimaryCursor ${bg0_hard},${bg3}+fg
+    set-face window PrimaryCursor ${bg0_hard},${bg3}+fg
 }
 
 hook global -group gruvy FocusIn .* %{ gruvy-active }
@@ -71,7 +71,7 @@ set-face global value         ${purple2}
 set-face global type          ${yellow2}
 set-face global variable      ${blue2}
 set-face global module        ${green2}
-set-face global function      default
+set-face global function      ${aqua2}
 set-face global string        ${green2}+i
 set-face global keyword       ${red2}
 set-face global operator      default+b
@@ -91,7 +91,7 @@ set-face global list      ${fg0}
 
 set-face global Default default,default
 
-set-face global PrimarySelection ${bg0_hard},${blue2}+g
+set-face global PrimarySelection $(alpha $bg0_hard a0),${blue2}+g
 set-face global SecondarySelection ${bg0_hard},${blue1}+g
 
 set-face global PrimaryCursor ${bg0_hard},${fg0}+fg
