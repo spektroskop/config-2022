@@ -36,7 +36,7 @@ evaluate-commands %sh{
         uint uint8 uint16 uint32 uint64 uintptr float32 float64 complex64 complex128)
 
     printf %s "
-        add-highlighter shared/go/code/ regex \b[+-]?($dec|$bin|$oct|$hex)\b 0:value
+        add-highlighter shared/go/code/ regex [-+]?($dec|$bin|$oct|$hex)\b 0:value
         add-highlighter shared/go/code/ regex \b([^\W\d_][\w]*)\( 1:function
         add-highlighter shared/go/code/ regex \b($values)\b 0:value
         add-highlighter shared/go/code/ regex \b($keywords)\b 0:keyword
