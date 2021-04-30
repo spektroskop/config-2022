@@ -37,7 +37,7 @@ evaluate-commands %sh{
 
     printf %s "
         add-highlighter shared/go/code/ regex [-+]?($dec|$bin|$oct|$hex)\b 0:value
-        add-highlighter shared/go/code/ regex \b([^\W\d_][\w]*)\( 1:function
+        add-highlighter shared/go/code/ regex \b($id)\( 1:function
         add-highlighter shared/go/code/ regex \b($values)\b 0:value
         add-highlighter shared/go/code/ regex \b($keywords)\b 0:keyword
         add-highlighter shared/go/code/ regex \b($types)\b 0:type
