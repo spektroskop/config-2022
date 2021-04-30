@@ -1,3 +1,5 @@
+# FIXME: Hvordan få denne til å kjenne til $TMUX?
+
 [Unit]
 Description=%i@kakoune
 
