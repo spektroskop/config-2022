@@ -65,15 +65,15 @@ set-face global value         ${purple2}
 set-face global type          ${yellow2}
 set-face global variable      ${blue2}
 set-face global module        ${green2}
-set-face global function      ${fg0}
+set-face global function      default
 set-face global string        ${green2}+i
 set-face global keyword       ${red2}
-set-face global operator      ${fg0}+b
+set-face global operator      default+b
 set-face global attribute     ${orange2}
 set-face global comment       ${gray2}+i
 set-face global documentation comment
 set-face global meta          ${aqua2}
-set-face global builtin       ${fg0}+b
+set-face global builtin       default+b
 
 set-face global Default default,default
 
@@ -105,7 +105,7 @@ set-face global Prompt ${yellow2}
 
 set-face global BufferPadding ${bg4}
 set-face global MatchingChar default,${bg1}
-set-face global Whitespace ${bg3}+f
+set-face global Whitespace ${bg0_medium}+f
 set-face global WrapMarker ${fg4}
 "
 }
