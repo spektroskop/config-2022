@@ -43,9 +43,20 @@ gnome-setup() {
 	#   KEYBOARD_KEY_ff000002=btn_right
 	#   KEYBOARD_KEY_90002=btn_side
 	gsettings set org.gnome.desktop.peripherals.trackball scroll-wheel-emulation-button 2
+
+    # Section "InputClass"
+    #     Identifier "Kensington Slimblade Trackball"
+    #     MatchProduct "Kensington Slimblade Trackball"
+    #     MatchIsPointer "on"
+    #     MatchDevicePath "/dev/input/event*"
+    #     Driver "libinput"
+    #     Option "ButtonMapping" "1 2 3 4 5 6 7 8 9"
+    #     Option "ScrollButton" "3"
+    #     Option "ScrollMethod" "button"
+    # EndSection
 }
 
-gnome-setup
+# gnome-setup
 
 source ~/.config/shared-alias.sh
 
