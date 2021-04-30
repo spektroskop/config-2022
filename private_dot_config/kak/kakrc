@@ -84,6 +84,12 @@ define-command connect -override -params 1.. -command-completion %{
     } -- %val{session} %val{client} %arg{@}
 }
 
+define-command -override connect-terminal -params .. -shell-completion %{
+    connect terminal %arg{@}
+}
+
+alias global > connect-terminal
+
 define-command remove-whitespace -override %{
     try %{ execute-keys -draft \%s\h+$<ret>d }
 }
