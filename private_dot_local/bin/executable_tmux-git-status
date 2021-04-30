@@ -21,4 +21,4 @@ flags="#[$flags_style]$flags#[default]"
 branch=$(git rev-parse --abbrev-ref HEAD)
 branch="#[$branch_style]$branch#[default]"
 
-echo "$flags $branch"
+echo "$branch $flags"
