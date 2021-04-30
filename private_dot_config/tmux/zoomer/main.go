@@ -18,15 +18,19 @@ func buildCommand(existing []string, args ...string) []string {
 	return args
 }
 
+func shouldIgnore(name string) bool {
+	return strings.HasSuffix(name, "~")
+}
+
 func main() {
 	flag.Parse()
 
-	activeWindow, _, err := GetWindows()
+	activeWindow, err := GetActiveWindow()
 	if err != nil {
 		panic(err)
 	}
 
-	if activeWindow.Zoomed || strings.HasSuffix(activeWindow.Name, "~") {
+	if activeWindow.Zoomed || (!*force && shouldIgnore(activeWindow.Name)) {
 		return
 	}
 
