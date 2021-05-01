@@ -38,12 +38,12 @@ orange2="rgb:d65d0e"
 echo "
 
 declare-option -hidden str theme_modeline \
-    '{{mode_info}} {{context_info}} {${fg3}}%val{cursor_line}:%val{cursor_char_column} {${fg3}+b}%val{bufname}{default}{${yellow2}} %val{client}@%val{session} '
+    '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%opt{bufname}{gruvyClient} %val{client}@%val{session} '
 
 define-command -hidden -override gruvy-active %{
     set-face window Information ${fg1},${bg1}
     set-face window StatusLine default,${bg1}
-    set-face window StatusLineInfo ${purple2}
+    set-face window StatusLineInfo ${yellow2}
     set-face window gruvyBufname ${fg3}+b
     set-face window gruvyClient ${yellow2}
     set-face window gruvyCursor ${fg3}
@@ -51,27 +51,24 @@ define-command -hidden -override gruvy-active %{
 }
 
 define-command -hidden -override gruvy-inactive %{
-    set-face window Information default,${bg0_hard}
-    set-face window StatusLine default,${bg0_hard}
-    set-face window StatusLineInfo default
-    set-face window gruvyBufname default
-    set-face window gruvyClient default
-    set-face window gruvyCursor default
+    set-face window Information ${bg4},${bg0_hard}
+    set-face window StatusLine ${bg4},${bg0_hard}
+    set-face window StatusLineInfo ${bg4}
+    set-face window gruvyBufname ${bg4}
+    set-face window gruvyClient ${bg4}
+    set-face window gruvyCursor ${bg4}
     set-face window PrimaryCursor ${bg0_hard},${bg3}+fg
 }
 
+hook global -group gruvy WinDisplay .* %{ gruvy-active }
 hook global -group gruvy FocusIn .* %{ gruvy-active }
 hook global -group gruvy FocusOut .* %{ gruvy-inactive }
-
-set-face window gruvyBufname ${fg3}+b
-set-face window gruvyClient ${yellow2}
-set-face window gruvyCursor ${fg3}
 
 set-face global value         ${purple2}
 set-face global type          ${yellow2}
 set-face global variable      ${blue2}
 set-face global module        ${green2}
-set-face global function      ${aqua2}
+set-face global function      ${aqua2}+b
 set-face global string        ${green2}+i
 set-face global keyword       ${red2}
 set-face global operator      default+b
@@ -94,7 +91,6 @@ set-face global Default default,default
 set-face global PrimarySelection $(alpha $bg0_hard a0),${blue2}+g
 set-face global SecondarySelection $(alpha $bg0_hard a0),${blue1}+g
 
-set-face global PrimaryCursor ${bg0_hard},${fg0}+fg
 set-face global SecondaryCursor ${bg0_hard},${fg3}+fg
 set-face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg
 set-face global SecondaryCursorEol ${bg0_hard},${yellow1}+fg
@@ -107,12 +103,9 @@ set-face global LineNumbers ${bg4}
 set-face global LineNumberCursor ${yellow2},${bg1}
 set-face global LineNumbersWrapped ${bg1}
 
-set-face global Information ${fg1},${bg1}
 set-face global Error ${bg0_hard},${red1}
 
-set-face global StatusLine default,${bg1}
 set-face global StatusLineMode ${yellow2}
-set-face global StatusLineInfo ${purple2}
 set-face global StatusLineValue ${purple2}
 set-face global StatusCursor ${bg0_hard},${fg0}
 set-face global Prompt ${yellow2}

@@ -60,12 +60,9 @@ define-command -hidden -override gruvy-inactive %{
     set-face window PrimaryCursor ${bg0_hard},${bg3}+fg
 }
 
+hook global -group gruvy WinDisplay .* %{ gruvy-active }
 hook global -group gruvy FocusIn .* %{ gruvy-active }
 hook global -group gruvy FocusOut .* %{ gruvy-inactive }
-
-set-face global gruvyCursor ${fg1}
-set-face global gruvyBufname ${fg1}+b
-set-face global gruvyClient ${blue2}
 
 set-face global value         ${purple2}
 set-face global type          ${yellow2}
@@ -92,9 +89,8 @@ set-face global list      ${fg0}
 set-face global Default default,default
 
 set-face global PrimarySelection $(alpha $bg0_hard a0),${blue2}+g
-set-face global SecondarySelection ${bg0_hard},${blue1}+g
+set-face global SecondarySelection $(alpha $bg0_hard a0),${blue1}+g
 
-set-face global PrimaryCursor ${bg0_hard},${fg0}+fg
 set-face global SecondaryCursor ${bg0_hard},${fg3}+fg
 set-face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg
 set-face global SecondaryCursorEol ${bg0_hard},${yellow1}+fg
@@ -107,12 +103,9 @@ set-face global LineNumbers ${bg0_hard}
 set-face global LineNumberCursor ${yellow2},${bg1}
 set-face global LineNumbersWrapped ${bg1}
 
-set-face global Information ${fg1},${bg1}
 set-face global Error ${bg0_hard},${red1}
 
-set-face global StatusLine default,${bg1}
 set-face global StatusLineMode ${yellow2}
-set-face global StatusLineInfo ${blue2}
 set-face global StatusLineValue ${blue2}
 set-face global StatusCursor ${bg0_hard},${fg0}
 set-face global Prompt ${yellow2}
