@@ -9,8 +9,6 @@ struct Error {
     error: String,
 }
 
-type Result<T> = result::Result<T, Error>;
-
 impl Error {
     fn error<T>(error: &str) -> impl Fn(T) -> Error + '_ {
         move |_| Error {
@@ -25,7 +23,9 @@ impl fmt::Display for Error {
     }
 }
 
-#[derive(Debug)]
+type Result<T> = result::Result<T, Error>;
+
+#[derive(Debug, Clone)]
 struct Entry {
     id: String,
     name: String,
@@ -41,14 +41,16 @@ fn parse_prop<T: str::FromStr>(arg: &str, error: &str) -> Result<T> {
 
 impl Entry {
     fn new<const S: usize>(fields: [&str; S]) -> Result<Entry> {
-        Ok(Entry {
+        let entry = Entry {
             active: fields[0] == "1",
             id: fields[1].to_string(),
             name: fields[2].to_string(),
             width: parse_prop(fields[3], "bad width")?,
             height: parse_prop(fields[4], "bad height")?,
             zoomed: fields[5] == "1",
-        })
+        };
+
+        Ok(entry)
     }
 
     fn should_ignore(&self) -> bool {
@@ -56,10 +58,7 @@ impl Entry {
     }
 }
 
-fn get_entries<const S: usize>(
-    cmd: &str,
-    format: [&str; S],
-) -> Result<(Option<Entry>, Vec<Entry>)> {
+fn get_entries<const S: usize>(cmd: &str, format: [&str; S]) -> Result<Vec<Entry>> {
     let output = Command::new("tmux")
         .arg(cmd)
         .arg("-F")
@@ -67,23 +66,23 @@ fn get_entries<const S: usize>(
         .output()
         .map_err(Error::error("command failed"))?;
 
-    let entries = String::from_utf8(output.stdout)
+    let all = String::from_utf8(output.stdout)
         .map_err(Error::error("bad format"))?
         .lines()
         .map(|line| {
-            Entry::new::<S>(
-                line.split(" ")
-                    .collect::<Vec<&str>>()
-                    .try_into()
-                    .map_err(Error::error("bad format"))?,
-            )
-        })
-        .collect::<Result<Vec<Entry>>>()?;
+            let fields: [&str; S] = line
+                .split_whitespace()
+                .collect::<Vec<&str>>()
+                .try_into()
+                .map_err(Error::error("bad format"))?;
 
-    Ok((None, entries))
+            Entry::new(fields)
+        })
+        .collect::<Result<Vec<Entry>>>();
+    all
 }
 
-fn get_windows() -> Result<(Option<Entry>, Vec<Entry>)> {
+fn get_windows() -> Result<Vec<Entry>> {
     get_entries(
         "list-windows",
         [
@@ -97,7 +96,7 @@ fn get_windows() -> Result<(Option<Entry>, Vec<Entry>)> {
     )
 }
 
-fn get_panes() -> Result<(Option<Entry>, Vec<Entry>)> {
+fn get_panes() -> Result<Vec<Entry>> {
     get_entries(
         "list-panes",
         [

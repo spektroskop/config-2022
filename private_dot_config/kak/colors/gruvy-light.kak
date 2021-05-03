@@ -41,7 +41,7 @@ declare-option -hidden str theme_modeline \
     '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%opt{bufname}{gruvyClient} %val{client}@%val{session} '
 
 define-command -hidden -override gruvy-active %{
-    set-face window Information ${fg1},${bg1}
+    set-face window Information ${blue2},default
     set-face window StatusLine ${fg4},${bg1}
     set-face window StatusLineMode ${yellow2}
     set-face window StatusLineInfo ${blue2}
