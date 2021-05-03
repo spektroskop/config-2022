@@ -18,8 +18,8 @@ func buildCommand(existing []string, args ...string) []string {
 	return args
 }
 
-func shouldIgnore(name string) bool {
-	return strings.HasSuffix(name, "~")
+func shouldIgnore(entry *Entry) bool {
+	return entry.Zoomed || strings.HasSuffix(entry.Name, "~")
 }
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 		panic(err)
 	}
 
-	if activeWindow.Zoomed || (!*force && shouldIgnore(activeWindow.Name)) {
+	if !*force && shouldIgnore(activeWindow) {
 		return
 	}
 

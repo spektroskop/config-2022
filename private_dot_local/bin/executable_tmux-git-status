@@ -14,8 +14,8 @@ grep -q "^D." <<< "$status" && flags="${flags}D"
 grep -q "^M." <<< "$status" && flags="${flags}M"
 grep -q "^ M" <<< "$status" && flags="${flags}m"
 grep -q "^??" <<< "$status" && flags="${flags}?"
-grep -q "ahead" <<< "$all" && flags="${flags}>"
-grep -q "behind" <<< "$all" && flags="${flags}<"
+grep -q "ahead" <<< "$all" && flags="${flags}'"
+grep -q "behind" <<< "$all" && flags="${flags},"
 flags="#[$flags_style]$flags#[default]"
 
 branch=$(git rev-parse --abbrev-ref HEAD)

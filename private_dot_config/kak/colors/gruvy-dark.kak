@@ -43,6 +43,7 @@ declare-option -hidden str theme_modeline \
 define-command -hidden -override gruvy-active %{
     set-face window Information ${fg1},${bg1}
     set-face window StatusLine default,${bg1}
+    set-face window StatusLineMode ${aqua2}
     set-face window StatusLineInfo ${yellow2}
     set-face window gruvyBufname ${fg3}+b
     set-face window gruvyClient ${yellow2}
@@ -53,6 +54,7 @@ define-command -hidden -override gruvy-active %{
 define-command -hidden -override gruvy-inactive %{
     set-face window Information ${bg4},${bg0_hard}
     set-face window StatusLine ${bg4},${bg0_hard}
+    set-face window StatusLineMode ${bg4}
     set-face window StatusLineInfo ${bg4}
     set-face window gruvyBufname ${bg4}
     set-face window gruvyClient ${bg4}
@@ -63,6 +65,16 @@ define-command -hidden -override gruvy-inactive %{
 hook global -group gruvy WinDisplay .* %{ gruvy-active }
 hook global -group gruvy FocusIn .* %{ gruvy-active }
 hook global -group gruvy FocusOut .* %{ gruvy-inactive }
+
+hook global -group gruvy ModeChange '.*:insert' %{
+    set-face window PrimaryCursor ${bg0_hard},${purple1}+fg
+    set-face window PrimaryCursorEol ${bg0_hard},${purple2}+fg
+}
+
+hook global -group gruvy ModeChange '.*:normal' %{
+    set-face window PrimaryCursor ${bg0_hard},${fg0}+fg
+    set-face window PrimaryCursorEol ${bg0_hard},${yellow2}+fg
+}
 
 set-face global value         ${purple2}
 set-face global type          ${yellow2}
@@ -105,7 +117,6 @@ set-face global LineNumbersWrapped ${bg1}
 
 set-face global Error ${bg0_hard},${red1}
 
-set-face global StatusLineMode ${yellow2}
 set-face global StatusLineValue ${purple2}
 set-face global StatusCursor ${bg0_hard},${fg0}
 set-face global Prompt ${yellow2}
