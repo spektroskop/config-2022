@@ -6,20 +6,30 @@ use std::str;
 
 #[derive(Debug, Clone)]
 struct Error {
-    error: String,
+    message: String,
 }
 
 impl Error {
-    fn error<T>(error: &str) -> impl Fn(T) -> Error + '_ {
+    fn from_str(message: &str) -> Error {
+        Error {
+            message: message.to_string(),
+        }
+    }
+
+    fn from_string(message: String) -> Error {
+        Error { message: message }
+    }
+
+    fn error<T>(message: &str) -> impl Fn(T) -> Error + '_ {
         move |_| Error {
-            error: error.to_string(),
+            message: message.to_string(),
         }
     }
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.error)
+        write!(f, "{}", self.message)
     }
 }
 
@@ -35,8 +45,8 @@ struct Entry {
     height: u64,
 }
 
-fn parse_prop<T: str::FromStr>(arg: &str, error: &str) -> Result<T> {
-    arg.parse::<T>().map_err(Error::error(error))
+fn parse_prop<T: str::FromStr>(arg: &str, message: &str) -> Result<T> {
+    arg.parse::<T>().map_err(Error::error(message))
 }
 
 impl Entry {
@@ -53,12 +63,15 @@ impl Entry {
         Ok(entry)
     }
 
-    fn should_ignore(&self) -> bool {
-        self.zoomed || self.name.ends_with("~")
-    }
+    // fn should_ignore(&self) -> bool {
+    //     self.zoomed || self.name.ends_with("~")
+    // }
 }
 
-fn get_entries<const S: usize>(cmd: &str, format: [&str; S]) -> Result<Vec<Entry>> {
+fn get_entries<const S: usize>(
+    cmd: &str,
+    format: [&str; S],
+) -> Result<(Option<Entry>, Vec<Entry>)> {
     let output = Command::new("tmux")
         .arg(cmd)
         .arg("-F")
@@ -66,23 +79,36 @@ fn get_entries<const S: usize>(cmd: &str, format: [&str; S]) -> Result<Vec<Entry
         .output()
         .map_err(Error::error("command failed"))?;
 
-    let all = String::from_utf8(output.stdout)
-        .map_err(Error::error("bad format"))?
-        .lines()
-        .map(|line| {
-            let fields: [&str; S] = line
-                .split_whitespace()
-                .collect::<Vec<&str>>()
-                .try_into()
-                .map_err(Error::error("bad format"))?;
+    match output.status.code() {
+        Some(0) => {
+            let (all_active, rest): (Vec<_>, Vec<_>) = String::from_utf8(output.stdout)
+                .map_err(Error::error("bad format"))?
+                .lines()
+                .map(|line| {
+                    let fields: [&str; S] = line
+                        .split_whitespace()
+                        .collect::<Vec<&str>>()
+                        .try_into()
+                        .map_err(Error::error("bad format"))?;
 
-            Entry::new(fields)
-        })
-        .collect::<Result<Vec<Entry>>>();
-    all
+                    Entry::new(fields)
+                })
+                .collect::<Result<Vec<_>>>()?
+                .into_iter()
+                .partition(|v| v.active);
+
+            let active = all_active.into_iter().nth(0);
+
+            Ok((active, rest))
+        }
+
+        Some(code) => Err(Error::from_string(format!("exit status {}", code))),
+
+        None => Err(Error::from_str("process terminated")),
+    }
 }
 
-fn get_windows() -> Result<Vec<Entry>> {
+fn get_windows() -> Result<(Option<Entry>, Vec<Entry>)> {
     get_entries(
         "list-windows",
         [
@@ -96,7 +122,7 @@ fn get_windows() -> Result<Vec<Entry>> {
     )
 }
 
-fn get_panes() -> Result<Vec<Entry>> {
+fn get_panes() -> Result<(Option<Entry>, Vec<Entry>)> {
     get_entries(
         "list-panes",
         [

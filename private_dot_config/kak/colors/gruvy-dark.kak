@@ -41,9 +41,9 @@ declare-option -hidden str theme_modeline \
     '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%opt{bufname}{gruvyClient} %val{client}@%val{session} '
 
 define-command -hidden -override gruvy-active %{
-    set-face window Information ${aqua2},default
+    set-face window Information ${blue2},default
     set-face window StatusLine default,${bg1}
-    set-face window StatusLineMode ${aqua2}
+    set-face window StatusLineMode ${blue2}
     set-face window StatusLineInfo ${yellow2}
     set-face window gruvyBufname ${fg3}+b
     set-face window gruvyClient ${yellow2}
@@ -100,15 +100,15 @@ set-face global list      ${fg0}
 
 set-face global Default default,default
 
-set-face global PrimarySelection $(alpha $bg0_hard a0),${blue2}+g
-set-face global SecondarySelection $(alpha $bg0_hard a0),${blue1}+g
+set-face global PrimarySelection $(alpha $fg0 16),${bg0_soft}+g
+set-face global SecondarySelection $(alpha $fg0 16),${bg0_hard}+g
 
 set-face global SecondaryCursor ${bg0_hard},${fg3}+fg
 set-face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg
 set-face global SecondaryCursorEol ${bg0_hard},${yellow1}+fg
 
 set-face global MenuInfo ${bg0_hard}
-set-face global MenuForeground ${bg0_hard},${aqua2}
+set-face global MenuForeground ${bg0_hard},${blue2}
 set-face global MenuBackground ${fg0},${bg2}
 
 set-face global LineNumbers ${bg4}

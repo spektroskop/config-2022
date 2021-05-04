@@ -34,7 +34,7 @@ plug "kak-lsp/kak-lsp" do %{
 
 source "%val{config}/rc/movement.kak"
 # source "%val{config}/rc/reselect.kak"
-# source "%val{config}/rc/select-word.kak"
+#source "%val{config}/rc/select-word.kak"
 # source "%val{config}/rc/select-line.kak"
 # source "%val{config}/rc/select-vertical.kak"
 source "%val{config}/rc/connect.kak"
@@ -143,7 +143,7 @@ define-command window-padding -override %{
     add-highlighter window/padding flag-lines Default padding_flags
 }
 
-define-command restart-lsp -override %{
+define-command lsp-restart-override %{
     lsp-stop; lsp-start
 }
 
@@ -192,6 +192,7 @@ map global user l   ':enter-user-mode lsp<ret>'    -docstring 'LSP mode'
 map global user /   '/(?i)'                        -docstring 'Case-insensitive search'
 map global user w   ':remove-whitespace<ret>'      -docstring 'Remove trailing whitespace'
 map global user p   ':window-padding<ret>'         -docstring 'Window padding'
+map global user a   ';li'                          -docstring 'Append'
 
 map global normal '%' '<c-s>%'
 map global normal '#' :comment-line<ret>
