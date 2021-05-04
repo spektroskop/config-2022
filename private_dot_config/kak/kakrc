@@ -76,8 +76,8 @@ set-option      global autocomplete prompt
 set-option      global tabstop 4
 set-option      global indentwidth 4
 set-option      global modelinefmt "%opt{theme_modeline}"
-# set-option      global disabled_hooks '.*-(insert|indent)'
-set-option      global disabled_hooks '.*-(insert)'
+set-option      global disabled_hooks '.*-(insert|indent)'
+# set-option      global disabled_hooks '.*-(insert)'
 set-option      global idle_timeout 100
 set-option      global completers word=buffer
 
@@ -143,7 +143,7 @@ define-command window-padding -override %{
     add-highlighter window/padding flag-lines Default padding_flags
 }
 
-define-command lsp-restart-override %{
+define-command lsp-restart -override %{
     lsp-stop; lsp-start
 }
 

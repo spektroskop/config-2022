@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::convert::TryInto;
 use std::fmt;
 use std::process::Command;
@@ -63,15 +65,22 @@ impl Entry {
         Ok(entry)
     }
 
-    // fn should_ignore(&self) -> bool {
-    //     self.zoomed || self.name.ends_with("~")
-    // }
+    fn from_str<const S: usize>(line: &str) -> Result<Entry> {
+        let fields: [&str; S] = line
+            .split_whitespace()
+            .collect::<Vec<&str>>()
+            .try_into()
+            .map_err(Error::error("bad format"))?;
+
+        Entry::new(fields)
+    }
+
+    fn should_ignore(&self) -> bool {
+        self.zoomed || self.name.ends_with("~")
+    }
 }
 
-fn get_entries<const S: usize>(
-    cmd: &str,
-    format: [&str; S],
-) -> Result<(Option<Entry>, Vec<Entry>)> {
+fn run_command<const S: usize>(cmd: &str, format: [&str; S]) -> Result<String> {
     let output = Command::new("tmux")
         .arg(cmd)
         .arg("-F")
@@ -80,32 +89,26 @@ fn get_entries<const S: usize>(
         .map_err(Error::error("command failed"))?;
 
     match output.status.code() {
-        Some(0) => {
-            let (all_active, rest): (Vec<_>, Vec<_>) = String::from_utf8(output.stdout)
-                .map_err(Error::error("bad format"))?
-                .lines()
-                .map(|line| {
-                    let fields: [&str; S] = line
-                        .split_whitespace()
-                        .collect::<Vec<&str>>()
-                        .try_into()
-                        .map_err(Error::error("bad format"))?;
-
-                    Entry::new(fields)
-                })
-                .collect::<Result<Vec<_>>>()?
-                .into_iter()
-                .partition(|v| v.active);
-
-            let active = all_active.into_iter().nth(0);
-
-            Ok((active, rest))
-        }
-
+        Some(0) => String::from_utf8(output.stdout).map_err(Error::error("bad format")),
         Some(code) => Err(Error::from_string(format!("exit status {}", code))),
-
         None => Err(Error::from_str("process terminated")),
     }
+}
+
+fn get_entries<const S: usize>(
+    cmd: &str,
+    format: [&str; S],
+) -> Result<(Option<Entry>, Vec<Entry>)> {
+    let all = run_command(cmd, format)?
+        .lines()
+        .map(Entry::from_str::<S>)
+        .collect::<Result<Vec<_>>>()?;
+
+    let (all_active, rest): (Vec<_>, Vec<_>) = all.into_iter().partition(|v| v.active);
+
+    let active = all_active.into_iter().nth(0);
+
+    Ok((active, rest))
 }
 
 fn get_windows() -> Result<(Option<Entry>, Vec<Entry>)> {
@@ -137,6 +140,18 @@ fn get_panes() -> Result<(Option<Entry>, Vec<Entry>)> {
 }
 
 fn main() {
-    println!("{:#?}", get_windows());
+    let ratio: f64 = 1.618;
+    match get_windows() {
+        Ok((Some(window), _)) => {
+            if !window.should_ignore() {
+                let width = (window.width as f64 / ratio) as u64;
+                let height = (window.height as f64 / ratio) as u64;
+                println!("{} {} {:#?}", width, height, window);
+            }
+        }
+        _ => println!("nope"),
+    }
+
+    // println!("{:#?}", get_windows());
     println!("{:#?}", get_panes());
 }

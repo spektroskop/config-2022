@@ -17,7 +17,8 @@ add-highlighter shared/go/block_comment region /\* \*/ fill comment
 add-highlighter shared/go/line_comment  region '//' $  fill comment
 
 add-highlighter shared/go/code default-region group
-add-highlighter shared/go/code/numbers regex (0[bBoOxX]|[-+]?\d|\.\d)[\w.]*i? 0:value
+add-highlighter shared/go/code/numbers regex \b(0[bBoOxX]|[-+]?\d|\.\d)[\w.]*i? 0:value
+add-highlighter shared/go/code/struct_val regex \b(\w+): 1:value # FIXME
 add-highlighter shared/go/code/var regex var\h+(\w+(,\h*\w+)*) 1:variable
 add-highlighter shared/go/code/short_var regex \b(\w+(,\h*\w+)*)\h+(:?=\h) 1:variable
 add-highlighter shared/go/code/function_call regex \b(\w+)\( 1:function
