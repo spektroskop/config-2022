@@ -38,7 +38,7 @@ orange2="rgb:d65d0e"
 echo "
 
 declare-option -hidden str theme_modeline \
-    '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%opt{bufname}{gruvyClient} %val{client}@%val{session} '
+    '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%opt{bufname} {gruvyClient} %val{client}@%val{session} '
 
 define-command -hidden -override gruvy-active %{
     set-face window Information ${blue2},default
@@ -122,7 +122,7 @@ set-face global StatusCursor ${bg0_hard},${fg0}
 set-face global Prompt ${yellow2}
 
 set-face global BufferPadding ${bg4}
-set-face global MatchingChar default,${bg1}
+set-face global MatchingChar default,${bg0_hard}
 set-face global Whitespace ${bg0_medium}+f
 set-face global WrapMarker ${fg4}
 

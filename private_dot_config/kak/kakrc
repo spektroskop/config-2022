@@ -4,6 +4,8 @@
 
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 
+plug "https://gitlab.com/fsub/kakoune-mark.git"
+
 plug "andreyorst/plug.kak" noload
 # plug "gustavo-hms/luar"
 # plug "alexherbo2/search.kak"
@@ -103,6 +105,7 @@ define-command match-indent -override %{
 define-command grep-selection -override %{
     grep "%val{selection}"
 }
+alias global g grep-selection
 
 define-command remove-whitespace -override %{
     try %{ execute-keys -draft \%s\h+$<ret>d }
@@ -199,7 +202,9 @@ try %{ declare-user-mode find }
 map global user f   ':enter-user-mode find<ret>'   -docstring 'Find'
 map global find f   ':find '                       -docstring 'File'
 map global find b   ':buffer '                     -docstring 'Buffer'
+
 map global user l   ':enter-user-mode lsp<ret>'    -docstring 'LSP mode'
+
 map global user /   '/(?i)'                        -docstring 'Case-insensitive search'
 map global user w   ':remove-whitespace<ret>'      -docstring 'Remove trailing whitespace'
 map global user p   ':window-padding<ret>'         -docstring 'Window padding'
@@ -220,11 +225,12 @@ map global normal <c-s> ':write<ret>'
 ###
 
 hook global WinSetOption filetype=.* %{
-    expandtab
+    # expandtab
 
-    set-option buffer tabstop 4
-    set-option buffer indentwidth 4
-    set-option buffer softtabstop 4
+    set-option window tabstop 4
+    set-option window indentwidth 4
+    set-option window softtabstop 4
+    set-option window extra_word_chars
 }
 
 hook global WinSetOption filetype=rust %{
@@ -255,6 +261,7 @@ hook global WinSetOption filetype=elm %{
 }
 
 hook global WinSetOption filetype=go %{
+    noexpandtab
     set-option window indentwidth 0
     set-option window lsp_auto_highlight_references true
     set-option window formatcmd 'goimports'

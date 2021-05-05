@@ -1,0 +1,5 @@
+{{ if eq .theme "gruvy-dark" -}}
+source ~/.config/tmux/theme-gruvy-dark.conf
+{{- else if eq .theme "gruvy-light" }}
+source ~/.config/tmux/theme-gruvy-light.conf
+{{- end }}
