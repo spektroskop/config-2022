@@ -124,16 +124,17 @@ fn main() -> result::Result<(), String> {
                 "resize-pane -t {} -x {} -y {}",
                 active_pane.id, main_width, main_height
             ));
-            let row = panes
-                .iter()
-                .filter(|entry| entry.height == active_pane.height)
-                .collect::<Vec<&Entry>>();
-            if row.len() > 1 {
-                let x = (active_window.width - main_width) / row.len() as u64;
-                for p in row {
-                    resize_command.push(format!("resize-pane -t {} -x {}", p.id, x));
-                }
-            }
+
+            // let row = panes
+            //     .iter()
+            //     .filter(|entry| entry.height == active_pane.height)
+            //     .collect::<Vec<&Entry>>();
+            // if row.len() > 1 {
+            //     let x = (active_window.width - main_width) / row.len() as u64;
+            //     for p in row {
+            //         resize_command.push(format!("resize-pane -t {} -x {}", p.id, x));
+            //     }
+            // }
 
             let col = panes
                 .iter()

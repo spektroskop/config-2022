@@ -1,2 +1,2 @@
 build:
-	go build -o ~/.local/bin/tmux-zoomer -v .
+	go build -o ~/.local/bin/pz.go -v .
