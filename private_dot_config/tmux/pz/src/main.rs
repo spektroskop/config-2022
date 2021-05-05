@@ -1,41 +1,11 @@
 #![allow(dead_code)]
 
 use std::convert::TryInto;
-use std::fmt;
 use std::process::Command;
 use std::result;
 use std::str;
 
-#[derive(Debug, Clone)]
-struct Error {
-    message: String,
-}
-
-impl Error {
-    fn from_str(message: &str) -> Error {
-        Error {
-            message: message.to_string(),
-        }
-    }
-
-    fn from_string(message: String) -> Error {
-        Error { message: message }
-    }
-
-    fn error<T>(message: &str) -> impl Fn(T) -> Error + '_ {
-        move |_| Error {
-            message: message.to_string(),
-        }
-    }
-}
-
-impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.message)
-    }
-}
-
-type Result<T> = result::Result<T, Error>;
+type Result<T> = result::Result<T, String>;
 
 #[derive(Debug, Clone)]
 struct Entry {
@@ -47,18 +17,18 @@ struct Entry {
     height: u64,
 }
 
-fn parse_prop<T: str::FromStr>(arg: &str, message: &str) -> Result<T> {
-    arg.parse::<T>().map_err(Error::error(message))
-}
-
 impl Entry {
-    fn new<const S: usize>(fields: [&str; S]) -> Result<Entry> {
+    fn from_fields<const S: usize>(fields: [&str; S]) -> Result<Entry> {
         let entry = Entry {
             active: fields[0] == "1",
             id: fields[1].to_string(),
             name: fields[2].to_string(),
-            width: parse_prop(fields[3], "bad width")?,
-            height: parse_prop(fields[4], "bad height")?,
+            width: fields[3]
+                .parse::<u64>()
+                .map_err(|_| "bad width".to_string())?,
+            height: fields[4]
+                .parse::<u64>()
+                .map_err(|_| "bad height".to_string())?,
             zoomed: fields[5] == "1",
         };
 
@@ -68,11 +38,11 @@ impl Entry {
     fn from_str<const S: usize>(line: &str) -> Result<Entry> {
         let fields: [&str; S] = line
             .split_whitespace()
-            .collect::<Vec<&str>>()
+            .collect::<Vec<_>>()
             .try_into()
-            .map_err(Error::error("bad format"))?;
+            .map_err(|_| "bad format".to_string())?;
 
-        Entry::new(fields)
+        Entry::from_fields(fields)
     }
 
     fn should_ignore(&self) -> bool {
@@ -86,12 +56,12 @@ fn run_command<const S: usize>(cmd: &str, format: [&str; S]) -> Result<String> {
         .arg("-F")
         .arg(format.join(" "))
         .output()
-        .map_err(Error::error("command failed"))?;
+        .map_err(|_| "command failed".to_string())?;
 
     match output.status.code() {
-        Some(0) => String::from_utf8(output.stdout).map_err(Error::error("bad format")),
-        Some(code) => Err(Error::from_string(format!("exit status {}", code))),
-        None => Err(Error::from_str("process terminated")),
+        Some(0) => String::from_utf8(output.stdout).map_err(|_| "bad format".to_string()),
+        Some(code) => Err(format!("exit status {}", code)),
+        None => Err("process terminated".to_string()),
     }
 }
 
