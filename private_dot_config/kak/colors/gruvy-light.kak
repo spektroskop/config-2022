@@ -38,11 +38,12 @@ orange2="rgb:d65d0e"
 echo "
 
 declare-option -hidden str theme_modeline \
-    '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%opt{bufname}{gruvyClient} %val{client}@%val{session} '
+    '{{mode_info}} {{context_info}} {gruvyCursor}%val{cursor_line}:%val{cursor_char_column} {gruvyBufname}%opt{bufname} {gruvyClient} %val{client}@%val{session} '
 
 define-command -hidden -override gruvy-active %{
-    set-face window Information ${fg1},${bg1}
+    set-face window Information ${blue2},default
     set-face window StatusLine ${fg4},${bg1}
+    set-face window StatusLineMode ${yellow2}
     set-face window StatusLineInfo ${blue2}
     set-face window gruvyBufname ${fg1}+b
     set-face window gruvyClient ${blue2}
@@ -53,6 +54,7 @@ define-command -hidden -override gruvy-active %{
 define-command -hidden -override gruvy-inactive %{
     set-face window Information ${fg2},${bg3}
     set-face window StatusLine ${fg2},${bg3}
+    set-face window StatusLineMode ${fg2}
     set-face window StatusLineInfo ${fg2}
     set-face window gruvyBufname ${fg2}
     set-face window gruvyClient ${fg2}
@@ -63,6 +65,16 @@ define-command -hidden -override gruvy-inactive %{
 hook global -group gruvy WinDisplay .* %{ gruvy-active }
 hook global -group gruvy FocusIn .* %{ gruvy-active }
 hook global -group gruvy FocusOut .* %{ gruvy-inactive }
+
+hook global -group gruvy ModeChange '.*:insert' %{
+    set-face window PrimaryCursor ${bg0_hard},${purple1}+fg
+    set-face window PrimaryCursorEol ${bg0_hard},${purple2}+fg
+}
+
+hook global -group gruvy ModeChange '.*:normal' %{
+    set-face window PrimaryCursor ${bg0_hard},${fg0}+fg
+    set-face window PrimaryCursorEol ${bg0_hard},${yellow2}+fg
+}
 
 set-face global value         ${purple2}
 set-face global type          ${yellow2}
@@ -105,7 +117,6 @@ set-face global LineNumbersWrapped ${bg1}
 
 set-face global Error ${bg0_hard},${red1}
 
-set-face global StatusLineMode ${yellow2}
 set-face global StatusLineValue ${blue2}
 set-face global StatusCursor ${bg0_hard},${fg0}
 set-face global Prompt ${yellow2}

@@ -4,7 +4,11 @@
 
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 
+plug "https://gitlab.com/fsub/kakoune-mark.git"
+
 plug "andreyorst/plug.kak" noload
+# plug "gustavo-hms/luar"
+# plug "alexherbo2/search.kak"
 
 plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option buffer softtabstop 4
@@ -26,15 +30,30 @@ plug "kak-lsp/kak-lsp" do %{
     cargo install --locked --force --path .
 }
 
-declare-option -hidden str bufname
-define-command -hidden -override shorten-bufname %{
-    set-option buffer bufname %sh{
-        printf "%s\n" "${kak_bufname}" | perl -pe 's:(?(?<=/)|(?<=^))([^\p{Letter}\p{Digit}]+.|[^/]).+?/:\1/:g'
-    }
+# evanrelf/reselect.kak
+# alexherbo2/word-select.kak
+# evanrelf/byline.kak
+
+source "%val{config}/rc/movement.kak"
+# source "%val{config}/rc/reselect.kak"
+#source "%val{config}/rc/select-word.kak"
+# source "%val{config}/rc/select-line.kak"
+# source "%val{config}/rc/select-vertical.kak"
+source "%val{config}/rc/connect.kak"
+source "%val{config}/rc/bufname.kak"
+
+define-command -override surround-add -params 2 %{
+    execute-keys "i%arg{1}<esc>a%arg{2}<esc>"
 }
-hook global WinDisplay .* shorten-bufname
-hook global BufWritePost .* shorten-bufname
-# hook global NormalIdle .* shorten-bufname
+# define-command -hidden surround-add -params 2 %{
+#         exec "i%arg{1}<esc>Ha%arg{2}" <esc>
+# }
+# define-command -hidden surround-del %{
+#         exec "i<del><esc>a<backspace><esc>"
+# }
+# define-command -hidden surround-move -params 2 %{
+#         exec "%arg{1}<a-;>%arg{2}<a-;>"
+# }
 
 ###
 ### COLORS
@@ -52,13 +71,15 @@ set-option -add global ui_options ncurses_enable_mouse=false
 set-option -add global ui_options terminal_set_title=false
 set-option      global startup_info_version 20200901
 set-option      global autoreload yes
+# set-option      global writemethod replace
 set-option      global grepcmd 'rg -iHL --column'
-set-option      global scrolloff 2,5
+set-option      global scrolloff 3,3
 set-option      global autocomplete prompt
 set-option      global tabstop 4
 set-option      global indentwidth 4
 set-option      global modelinefmt "%opt{theme_modeline}"
 set-option      global disabled_hooks '.*-(insert|indent)'
+# set-option      global disabled_hooks '.*-(insert)'
 set-option      global idle_timeout 100
 set-option      global completers word=buffer
 
@@ -74,21 +95,17 @@ alias global qa! quit!
 alias global wqa write-quit
 alias global wqa! write-quit!
 
-define-command connect -override -params 1.. -command-completion %{
-    %arg{1} sh -c %{
-        export KAKOUNE_SESSION=$1
-        export KAKOUNE_CLIENT=$2
-        shift 3
-        [ $# = 0 ] && set "$SHELL"
-        "$@"
-    } -- %val{session} %val{client} %arg{@}
+map global normal '<tab>' ':match-indent<ret>'
+define-command match-indent -override %{
+    try %{ execute-keys -draft 'K<a-&>' }
+    try %{ execute-keys -draft 'k<a-x>s^\h+$<ret>d' }
 }
 
-define-command -override connect-terminal -params .. -shell-completion %{
-    connect terminal %arg{@}
+# TODO: handle spaces
+define-command grep-selection -override %{
+    grep "%val{selection}"
 }
-
-alias global > connect-terminal
+alias global g grep-selection
 
 define-command remove-whitespace -override %{
     try %{ execute-keys -draft \%s\h+$<ret>d }
@@ -140,7 +157,7 @@ define-command window-padding -override %{
     add-highlighter window/padding flag-lines Default padding_flags
 }
 
-define-command restart-lsp -override %{
+define-command lsp-restart -override %{
     lsp-stop; lsp-start
 }
 
@@ -150,9 +167,10 @@ define-command restart-lsp -override %{
 
 add-highlighter -override global/show-whitespaces show-whitespaces \
     -tab '│' -tabpad ' ' -lf ' ' -spc ' ' -nbsp ' '
-    # -tab '⍿' -tabpad ' ' -lf ' ' -spc ' ' -nbsp ' '
 
 add-highlighter -override global/trailing-whitespace regex '\h+$' 0:Information
+
+add-highlighter -override global/show-matching show-matching
 
 ###
 ### HOOKS
@@ -160,8 +178,9 @@ add-highlighter -override global/trailing-whitespace regex '\h+$' 0:Information
 
 hook global WinCreate .* %{ window-padding }
 
-# Ikke trygg? Endre til en som stripper linja når man går ut av InsertMode
-# hook global BufWritePre .* %{ remove-whitespace }
+hook -group delete-scratch-message global BufCreate '\Q*scratch*' %{
+    execute-keys '%d'
+}
 
 ###
 ### MAPS
@@ -183,43 +202,74 @@ try %{ declare-user-mode find }
 map global user f   ':enter-user-mode find<ret>'   -docstring 'Find'
 map global find f   ':find '                       -docstring 'File'
 map global find b   ':buffer '                     -docstring 'Buffer'
+
 map global user l   ':enter-user-mode lsp<ret>'    -docstring 'LSP mode'
+
 map global user /   '/(?i)'                        -docstring 'Case-insensitive search'
-map global user w   ':remove-whitespace<ret>'       -docstring 'Remove trailing whitespace'
+map global user w   ':remove-whitespace<ret>'      -docstring 'Remove trailing whitespace'
+map global user p   ':window-padding<ret>'         -docstring 'Window padding'
+map global user a   ';li'                          -docstring 'Append'
 
 map global normal '%' '<c-s>%'
-map global normal '{' '[p;k'
-map global normal '}' ']p;'
 map global normal '#' :comment-line<ret>
+map global normal <c-s> ':write<ret>'
 
-map global normal ^ q
-map global normal <a-^> Q
-map global normal q b
-map global normal Q B
-map global normal <a-q> <a-b>
-map global normal <a-Q> <a-B>
+# map global insert <ret> <esc>
+# map global normal <ret> ':'
+# hook global WinSetOption filetype=grep %{
+#     map window normal <ret> ':grep-jump<ret>'
+# }
 
 ###
 ### FILETYPES
 ###
 
 hook global WinSetOption filetype=.* %{
-    expandtab
+    # expandtab
 
-    set-option buffer tabstop 4
-    set-option buffer indentwidth 4
-    set-option buffer softtabstop 4
+    set-option window tabstop 4
+    set-option window indentwidth 4
+    set-option window softtabstop 4
+    set-option window extra_word_chars
+}
+
+hook global WinSetOption filetype=rust %{
+    set-option window lsp_auto_highlight_references true
+    set-option window formatcmd 'rustfmt'
+
+    hook window BufWritePre .* %{ lsp-formatting-sync }
+    # hook window BufWritePre .* %{ format-buffer }
+
+    try lsp-enable-window
+    lsp-diagnostic-lines-disable window
+    lsp-inline-diagnostics-disable window
+}
+
+hook global WinSetOption filetype=elm %{
+    set-option window lsp_auto_highlight_references true
+    set-option window formatcmd 'elm-format'
+
+    hook window BufWritePre .* %{ lsp-formatting-sync }
+    # hook window BufWritePre .* %{ format-buffer }
+
+    try lsp-enable-window
+    lsp-diagnostic-lines-disable window
+    lsp-inline-diagnostics-disable window
+
+    # remove-highlighter shared/elm
+    # source "%val{config}/rc/highlight/elm.kak"
 }
 
 hook global WinSetOption filetype=go %{
+    noexpandtab
     set-option window indentwidth 0
     set-option window lsp_auto_highlight_references true
-    set-option window formatcmd goimports
+    set-option window formatcmd 'goimports'
 
     # hook window BufWritePre .* %{ lsp-formatting-sync }
     hook window BufWritePre .* %{ format-buffer }
 
-    lsp-enable-window
+    try lsp-enable-window
     lsp-diagnostic-lines-disable window
     lsp-inline-diagnostics-disable window
 
