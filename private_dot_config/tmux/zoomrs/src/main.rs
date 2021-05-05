@@ -141,17 +141,50 @@ fn get_panes() -> Result<(Option<Entry>, Vec<Entry>)> {
 
 fn main() {
     let ratio: f64 = 1.618;
+
     match get_windows() {
-        Ok((Some(window), _)) => {
-            if !window.should_ignore() {
-                let width = (window.width as f64 / ratio) as u64;
-                let height = (window.height as f64 / ratio) as u64;
-                println!("{} {} {:#?}", width, height, window);
+        Ok((Some(active_window), _)) => {
+            if active_window.should_ignore() {
+                return;
+            }
+
+            match get_panes() {
+                Ok((Some(active_pane), panes)) => {
+                    let main_width = (active_window.width as f64 / ratio) as u64;
+                    let main_height = (active_window.height as f64 / ratio) as u64;
+
+                    print!(
+                        "resize-pane -t {} -x {} -y {} ; ",
+                        active_pane.id, main_width, main_height
+                    );
+
+                    let row = panes
+                        .iter()
+                        .filter(|entry| entry.height == active_pane.height)
+                        .collect::<Vec<&Entry>>();
+                    if row.len() > 1 {
+                        let x = (active_window.width - main_width) / row.len() as u64;
+                        for p in row {
+                            print!("resize-pane -t {} -x {} ; ", p.id, x);
+                        }
+                    }
+
+                    let col = panes
+                        .iter()
+                        .filter(|entry| entry.width == active_pane.width)
+                        .collect::<Vec<&Entry>>();
+                    if col.len() > 1 {
+                        let y = (active_window.height - main_height) / col.len() as u64;
+                        for p in col {
+                            print!("resize-pane -t {} -y {} ; ", p.id, y);
+                        }
+                    }
+
+                    println!();
+                }
+                _ => println!("nope"),
             }
         }
         _ => println!("nope"),
     }
-
-    // println!("{:#?}", get_windows());
-    println!("{:#?}", get_panes());
 }

@@ -51,7 +51,8 @@ set-option -g status-right-length 0
 ### HOOKS
 ###
 
-set-hook -g pane-focus-in "run-shell tmux-zoomer"
+# set-hook -g pane-focus-in "run-shell tmux-zoomer"
+set-hook -g pane-focus-in "run-shell 'tmux $(zoomrs)'"
 
 ###
 ### KEYS

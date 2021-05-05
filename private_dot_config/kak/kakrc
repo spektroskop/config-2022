@@ -93,6 +93,17 @@ alias global qa! quit!
 alias global wqa write-quit
 alias global wqa! write-quit!
 
+map global normal '<tab>' ':match-indent<ret>'
+define-command match-indent -override %{
+    try %{ execute-keys -draft 'K<a-&>' }
+    try %{ execute-keys -draft 'k<a-x>s^\h+$<ret>d' }
+}
+
+# TODO: handle spaces
+define-command grep-selection -override %{
+    grep "%val{selection}"
+}
+
 define-command remove-whitespace -override %{
     try %{ execute-keys -draft \%s\h+$<ret>d }
 }
