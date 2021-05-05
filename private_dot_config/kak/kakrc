@@ -95,6 +95,16 @@ alias global qa! quit!
 alias global wqa write-quit
 alias global wqa! write-quit!
 
+define-command two-pane -override -params 0..1 %{
+    try %{ rename-session %arg{1} }
+    rename-client main
+    set-option global jumpclient main
+    new rename-client tool
+    set-option global toolsclient tool
+    # new rename-client doc
+    # set-option global docsclient doc
+}
+
 map global normal '<tab>' ':match-indent<ret>'
 define-command match-indent -override %{
     try %{ execute-keys -draft 'K<a-&>' }
@@ -161,6 +171,18 @@ define-command lsp-restart -override %{
     lsp-stop; lsp-start
 }
 
+declare-option -hidden str swap_buffer_target
+define-command swap-buffer-with -override -params 1 -client-completion %{
+    set-option global swap_buffer_target %val{bufname}
+    edit -scratch # release current window for other client
+    evaluate-commands -client %arg{1} "
+        set-option global swap_buffer_target %%val{bufname}
+        buffer %opt{swap_buffer_target}
+    "
+    delete-buffer # delete the temporary scratch buffer
+    buffer %opt{swap_buffer_target}
+}
+
 ###
 ### HIGHLIGHTERS
 ###
@@ -225,12 +247,12 @@ map global normal <c-s> ':write<ret>'
 ###
 
 hook global WinSetOption filetype=.* %{
-    # expandtab
-
+    require-module smarttab
+    expandtab
     set-option window tabstop 4
     set-option window indentwidth 4
     set-option window softtabstop 4
-    set-option window extra_word_chars
+    # set-option window extra_word_chars
 }
 
 hook global WinSetOption filetype=rust %{
