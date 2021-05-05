@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os/exec"
 	"strings"
 )
 
@@ -11,11 +10,12 @@ var ratio = flag.Float64("ratio", 1.618, "")
 var skipSuffix = flag.String("skip", "~", "")
 var force = flag.Bool("force", false, "")
 
-func buildCommand(existing []string, args ...string) []string {
+func buildCommand(existing []string, format string, args ...interface{}) []string {
+	cmd := fmt.Sprintf(format, args)
 	if len(existing) != 0 {
-		return append(append(existing, ";"), args...)
+		return append(append(existing, ";"), cmd)
 	}
-	return args
+	return append(existing, cmd)
 }
 
 func shouldIgnore(entry *Entry) bool {
@@ -31,6 +31,7 @@ func main() {
 	}
 
 	if !*force && shouldIgnore(activeWindow) {
+		fmt.Println("asdf")
 		return
 	}
 
@@ -42,12 +43,12 @@ func main() {
 	width := int(float64(activeWindow.Width) / *ratio)
 	height := int(float64(activeWindow.Height) / *ratio)
 
-	resizeCommand := buildCommand(nil,
-		"resize-pane",
-		"-t", activePane.ID,
-		"-x", fmt.Sprint(width),
-		"-y", fmt.Sprint(height),
-	)
+	var resizeCommand []string
+
+	resizeCommand = append(resizeCommand, fmt.Sprintf(
+		"resize-pane -t %s -x %d -y %d",
+		activePane.ID, width, height,
+	))
 
 	var row, col []Entry
 	for _, p := range panes {
@@ -61,25 +62,24 @@ func main() {
 	}
 
 	if len(row) > 1 {
-		x := fmt.Sprint((activeWindow.Width - width) / len(row))
+		x := (activeWindow.Width - width) / len(row)
 		for _, p := range row {
-			resizeCommand = buildCommand(resizeCommand, "resize-pane",
-				"-t", p.ID, "-x", x,
-			)
+			resizeCommand = append(resizeCommand, fmt.Sprintf(
+				"resize-pane -t %s -x %d",
+				p.ID, x,
+			))
 		}
 	}
 
 	if len(col) > 1 {
-		y := fmt.Sprint((activeWindow.Height - height) / len(col))
+		y := (activeWindow.Height - height) / len(col)
 		for _, p := range col {
-			resizeCommand = buildCommand(resizeCommand, "resize-pane",
-				"-t", p.ID, "-y", y,
-			)
+			resizeCommand = append(resizeCommand, fmt.Sprintf(
+				"resize-pane -t %s -y %d",
+				p.ID, y,
+			))
 		}
 	}
 
-	cmd := exec.Command("tmux", resizeCommand...)
-	if err := cmd.Run(); err != nil {
-		panic(err)
-	}
+	fmt.Println(strings.Join(resizeCommand, " ; "))
 }

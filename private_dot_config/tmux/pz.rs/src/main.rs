@@ -5,7 +5,7 @@ use std::process::Command;
 use std::result;
 use std::str;
 
-type Result<T> = result::Result<T, &'static str>;
+type Result<T> = result::Result<T, String>;
 
 #[derive(Debug, Clone)]
 struct Entry {
@@ -23,8 +23,12 @@ impl Entry {
             active: fields[0] == "1",
             id: fields[1].to_string(),
             name: fields[2].to_string(),
-            width: fields[3].parse::<u64>().map_err(|_| "bad width")?,
-            height: fields[4].parse::<u64>().map_err(|_| "bad height")?,
+            width: fields[3]
+                .parse::<u64>()
+                .map_err(|_| "bad width".to_string())?,
+            height: fields[4]
+                .parse::<u64>()
+                .map_err(|_| "bad height".to_string())?,
             zoomed: fields[5] == "1",
         };
 
@@ -36,7 +40,7 @@ impl Entry {
             .split_whitespace()
             .collect::<Vec<_>>()
             .try_into()
-            .map_err(|_| "bad format")?;
+            .map_err(|_| "bad format".to_string())?;
 
         Entry::from_fields(fields)
     }
@@ -52,12 +56,12 @@ fn run_command<const S: usize>(cmd: &str, format: [&str; S]) -> Result<String> {
         .arg("-F")
         .arg(format.join(" "))
         .output()
-        .map_err(|_| "command failed")?;
+        .map_err(|_| "command failed".to_string())?;
 
     match output.status.code() {
-        Some(0) => String::from_utf8(output.stdout).map_err(|_| "bad format"),
-        Some(_) => Err("bad exit code"),
-        None => Err("process terminated"),
+        Some(0) => String::from_utf8(output.stdout).map_err(|_| "bad format".to_string()),
+        Some(code) => Err(format!("bad exit code: {}", code)),
+        None => Err("process terminated".to_string()),
     }
 }
 
@@ -103,7 +107,9 @@ fn get_panes() -> Result<(Option<Entry>, Vec<Entry>)> {
     )
 }
 
-fn main() -> result::Result<(), Box<dyn std::error::Error>> {
+fn main() -> result::Result<(), String> {
+    let mut resize_command: Vec<String> = vec![];
+
     if let (Some(active_window), _) = get_windows()? {
         if active_window.should_ignore() {
             return Ok(());
@@ -114,11 +120,10 @@ fn main() -> result::Result<(), Box<dyn std::error::Error>> {
             let main_width = (active_window.width as f64 / ratio) as u64;
             let main_height = (active_window.height as f64 / ratio) as u64;
 
-            print!(
-                "resize-pane -t {} -x {} -y {} ; ",
+            resize_command.push(format!(
+                "resize-pane -t {} -x {} -y {}",
                 active_pane.id, main_width, main_height
-            );
-
+            ));
             let row = panes
                 .iter()
                 .filter(|entry| entry.height == active_pane.height)
@@ -126,7 +131,7 @@ fn main() -> result::Result<(), Box<dyn std::error::Error>> {
             if row.len() > 1 {
                 let x = (active_window.width - main_width) / row.len() as u64;
                 for p in row {
-                    print!("resize-pane -t {} -x {} ; ", p.id, x);
+                    resize_command.push(format!("resize-pane -t {} -x {}", p.id, x));
                 }
             }
 
@@ -137,13 +142,13 @@ fn main() -> result::Result<(), Box<dyn std::error::Error>> {
             if col.len() > 1 {
                 let y = (active_window.height - main_height) / col.len() as u64;
                 for p in col {
-                    print!("resize-pane -t {} -y {} ; ", p.id, y);
+                    resize_command.push(format!("resize-pane -t {} -y {}", p.id, y));
                 }
             }
-
-            println!();
         }
     }
+
+    println!("{}", resize_command.join(" ; "));
 
     Ok(())
 }
