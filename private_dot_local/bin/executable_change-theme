@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -u
+THEME=$1
+cp -v ~/.config/chezmoi/chezmoi.toml ~/.config/chezmoi/chezmoi.toml.backup
+sed -i -r "s,(.*theme.*\")[^\"]+(\".*),\1${THEME}\2," ~/.config/chezmoi/chezmoi.toml
+chezmoi apply
+tmux source ~/.config/tmux/tmux.conf
+tmux source ~/.config/tmux/tmux.conf
