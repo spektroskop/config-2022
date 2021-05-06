@@ -13,7 +13,7 @@ add-highlighter shared/go/rune region "'" "'" group
 add-highlighter shared/go/rune/ regex '.' 0:attribute
 add-highlighter shared/go/rune/ regex ('.)([^'$]*) 1:attribute 2:Information
 
-add-highlighter shared/go/block_comment region /\* \*/ fill comment
+add-highlighter shared/go/block_comment region -recurse /\* /\* \*/ fill comment
 add-highlighter shared/go/line_comment  region '//' $  fill comment
 
 add-highlighter shared/go/code default-region group
