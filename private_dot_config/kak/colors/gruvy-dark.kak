@@ -49,6 +49,9 @@ define-command -hidden -override gruvy-active %{
     set-face window gruvyClient ${yellow2}
     set-face window gruvyCursor ${fg3}
     set-face window PrimaryCursor ${bg0_hard},${fg0}+fg
+    set-face window PrimaryCursorEol ${bg0_hard},${yellow2}+fg
+    set-face window SecondaryCursor ${bg0_hard},${fg3}+fg
+    set-face window SecondaryCursorEol ${bg0_hard},${yellow1}+fg
 }
 
 define-command -hidden -override gruvy-inactive %{
@@ -60,6 +63,9 @@ define-command -hidden -override gruvy-inactive %{
     set-face window gruvyClient ${bg4}
     set-face window gruvyCursor ${bg4}
     set-face window PrimaryCursor ${bg0_hard},${bg3}+fg
+    set-face window PrimaryCursorEol ${bg0_hard},${bg3}+fg
+    set-face window SecondaryCursor ${bg0_hard},${bg3}+fg
+    set-face window SecondaryCursorEol ${bg0_hard},${bg3}+fg
 }
 
 hook global -group gruvy WinDisplay .* %{ gruvy-active }
@@ -102,10 +108,6 @@ set-face global Default default,default
 
 set-face global PrimarySelection $(alpha $fg0 16),${bg0_soft}+g
 set-face global SecondarySelection $(alpha $fg0 16),${bg0_hard}+g
-
-set-face global SecondaryCursor ${bg0_hard},${fg3}+fg
-set-face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg
-set-face global SecondaryCursorEol ${bg0_hard},${yellow1}+fg
 
 set-face global MenuInfo ${bg0_hard}
 set-face global MenuForeground ${bg0_hard},${blue2}
