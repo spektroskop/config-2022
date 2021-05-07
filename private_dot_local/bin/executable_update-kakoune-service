@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -u
+name=$1
+prefix='~/.config/systemd/user'
+cat > ${prefix}/kak@${name}.service.d/override.conf <<END
+[Service]
+WorkingDirectory=$HOME
+Environment=PATH=$PATH
+Environment=TMUX=$TMUX
+Environment=HOME=$HOME
+END
+systemctl --user daemon-reload
