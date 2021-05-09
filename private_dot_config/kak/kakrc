@@ -87,11 +87,36 @@ define-command two-pane -override -params 0..1 %{
     # set-option global docsclient doc
 }
 
-map global normal '<tab>' ':match-indent<ret>'
-define-command match-indent -override %{
-    try %{ execute-keys -draft 'K<a-&>' }
-    try %{ execute-keys -draft 'k<a-x>s^\h+$<ret>d' }
+# map global normal '<tab>' ':match-indent<ret>'
+# define-command match-indent -override %{
+#     try %{ execute-keys -draft 'K<a-&>' }
+#     try %{ execute-keys -draft 'k<a-x>s^\h+$<ret>d' }
+# }
+
+define-command copy-indent -override %{
+    # execute-keys -draft k<a-x> s^\h+<ret>y j<a-h>P
+    # execute-keys -draft Z <a-/>^\h+<ret>y z gh<a-i><space>R
+
+    # TODO: look up,
+    # find first non-empty (except whitespace) line
+    # copy indent
+    # return
+    # remove current indent
+    # paste indent before cursor
+
+    # execute-keys -draft Z <a-/>\s*<ret> <a-;> gh
+    # try %{ execute-keys -draft <a-i><space> }
+    # execute-keys -draft '"zy' z
+    # try %{ execute-keys -draft gh<a-i><space>d }
+    # execute-keys -draft '"zP'
+
+    execute-keys -draft Z <a-/>^\h+(?=[^\s])<ret> '"zy' z
+    try %{ execute-keys -draft gh<a-i><space>d }
+    execute-keys -draft '"zP'
 }
+
+map global normal '<tab>' ':copy-indent<ret>'
+map global insert '<s-tab>' '<a-;>:copy-indent<ret>'
 
 # TODO: handle spaces
 define-command grep-selection -override %{
