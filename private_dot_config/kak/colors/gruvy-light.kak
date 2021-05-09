@@ -83,7 +83,7 @@ set-face global module        ${orange2}+b
 set-face global function      ${aqua2}+b
 set-face global string        ${green2}+i
 set-face global keyword       ${red2}
-set-face global operator      default+b
+set-face global operator      default
 set-face global attribute     ${orange2}
 set-face global comment       ${gray2}+i
 set-face global documentation comment
@@ -100,8 +100,8 @@ set-face global list      ${fg0}
 
 set-face global Default default,default
 
-set-face global PrimarySelection $(alpha $bg0_hard a0),${blue2}+g
-set-face global SecondarySelection $(alpha $bg0_hard a0),${blue1}+g
+set-face global PrimarySelection $(alpha $fg0 16),${bg1}+g
+set-face global SecondarySelection $(alpha $fg0 16),${bg0_soft}+g
 
 set-face global SecondaryCursor ${bg0_hard},${fg3}+fg
 set-face global PrimaryCursorEol ${bg0_hard},${yellow2}+fg

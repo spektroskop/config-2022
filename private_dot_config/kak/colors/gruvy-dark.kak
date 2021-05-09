@@ -89,7 +89,7 @@ set-face global module        ${orange2}+b
 set-face global function      ${aqua2}+b
 set-face global string        ${green2}+i
 set-face global keyword       ${red2}
-set-face global operator      default+b
+set-face global operator      default
 set-face global attribute     ${orange2}
 set-face global comment       ${gray2}+i
 set-face global documentation comment
