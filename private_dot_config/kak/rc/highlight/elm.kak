@@ -5,9 +5,12 @@
 # { x | a = b, c = d }
 # { a = b, c = d }
 # { x : A, y: B }
-
 # type alias Request route params =
 # type Request route params =
+# import Foo exposing (foo, Bar)
+# import Foo.Bar
+# module Foo exposing (bar, Baz)
+# module Foo.Bar
 
 add-highlighter shared/elm regions
 add-highlighter shared/elm/code default-region group
@@ -65,4 +68,5 @@ add-highlighter shared/elm/exposing region '\bexposing\b' '\)' group
 add-highlighter shared/elm/exposing/ regex '\b[A-Z]\w*\b' 0:type
 add-highlighter shared/elm/exposing/ regex '\b[a-z]\w*\b' 0:variable
 add-highlighter shared/elm/exposing/ ref elm/code/keywords
+
 add-highlighter shared/elm/code/ regex '^(import|module)\h+([\w.]+)' 2:meta
