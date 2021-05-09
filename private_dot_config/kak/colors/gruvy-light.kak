@@ -79,7 +79,7 @@ hook global -group gruvy ModeChange '.*:normal' %{
 set-face global value         ${purple2}
 set-face global type          ${yellow2}
 set-face global variable      ${blue2}
-set-face global module        ${green2}
+set-face global module        ${orange2}+b
 set-face global function      ${aqua2}+b
 set-face global string        ${green2}+i
 set-face global keyword       ${red2}
