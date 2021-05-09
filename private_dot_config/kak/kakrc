@@ -1,15 +1,7 @@
-###
-### PLUGINS
-###
-
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 
-plug "https://gitlab.com/fsub/kakoune-mark.git"
-
 plug "andreyorst/plug.kak" noload
-# plug "gustavo-hms/luar"
-# plug "alexherbo2/search.kak"
-
+plug "https://gitlab.com/fsub/kakoune-mark.git"
 plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option buffer softtabstop 4
     expandtab
@@ -30,6 +22,8 @@ plug "kak-lsp/kak-lsp" do %{
     cargo install --locked --force --path .
 }
 
+# plug "gustavo-hms/luar"
+# plug "alexherbo2/search.kak"
 # evanrelf/reselect.kak
 # alexherbo2/word-select.kak
 # evanrelf/byline.kak
@@ -55,15 +49,7 @@ define-command -override surround-add -params 2 %{
 #         exec "%arg{1}<a-;>%arg{2}<a-;>"
 # }
 
-###
-### COLORS
-###
-
 colorscheme gruvy
-
-###
-### OPTIONS
-###
 
 set-option -add global ui_options ncurses_assistant=none
 set-option -add global ui_options ncurses_status_on_top=false
@@ -82,10 +68,6 @@ set-option      global disabled_hooks '.*-(insert|indent)'
 # set-option      global disabled_hooks '.*-(insert)'
 set-option      global idle_timeout 100
 set-option      global completers word=buffer
-
-###
-### COMMANDS
-###
 
 alias global bd delete-buffer
 alias global bd! delete-buffer!
@@ -183,10 +165,6 @@ define-command swap-buffer-with -override -params 1 -client-completion %{
     buffer %opt{swap_buffer_target}
 }
 
-###
-### HIGHLIGHTERS
-###
-
 add-highlighter -override global/show-whitespaces show-whitespaces \
     -tab '│' -tabpad ' ' -lf ' ' -spc ' ' -nbsp ' '
 
@@ -194,19 +172,11 @@ add-highlighter -override global/trailing-whitespace regex '\h+$' 0:Information
 
 add-highlighter -override global/show-matching show-matching
 
-###
-### HOOKS
-###
-
 hook global WinCreate .* %{ window-padding }
 
 hook -group delete-scratch-message global BufCreate '\Q*scratch*' %{
     execute-keys '%d'
 }
-
-###
-### MAPS
-###
 
 try %{ declare-user-mode toggle }
 
@@ -242,10 +212,6 @@ map global normal <c-s> ':write<ret>'
 #     map window normal <ret> ':grep-jump<ret>'
 # }
 
-###
-### FILETYPES
-###
-
 hook global WinSetOption filetype=.* %{
     require-module smarttab
     expandtab
@@ -268,8 +234,13 @@ hook global WinSetOption filetype=rust %{
 }
 
 hook global WinSetOption filetype=elm %{
-    set-option window lsp_auto_highlight_references true
+    # set-option window lsp_auto_highlight_references true
     set-option window formatcmd 'elm-format'
+
+    expandtab
+    set-option window tabstop 4
+    set-option window indentwidth 4
+    set-option window softtabstop 4
 
     hook window BufWritePre .* %{ lsp-formatting-sync }
     # hook window BufWritePre .* %{ format-buffer }
@@ -278,8 +249,8 @@ hook global WinSetOption filetype=elm %{
     lsp-diagnostic-lines-disable window
     lsp-inline-diagnostics-disable window
 
-    # remove-highlighter shared/elm
-    # source "%val{config}/rc/highlight/elm.kak"
+    remove-highlighter shared/elm
+    source "%val{config}/rc/highlight/elm.kak"
 }
 
 hook global WinSetOption filetype=go %{
