@@ -260,15 +260,15 @@ hook global WinSetOption filetype=rust %{
 
 hook global WinSetOption filetype=elm %{
     # set-option window lsp_auto_highlight_references true
-    set-option window formatcmd 'elm-format'
+    set-option window formatcmd 'elm-format --stdin'
 
     expandtab
     set-option window tabstop 4
     set-option window indentwidth 4
     set-option window softtabstop 4
 
-    hook window BufWritePre .* %{ lsp-formatting-sync }
-    # hook window BufWritePre .* %{ format-buffer }
+    # hook window BufWritePre .* %{ lsp-formatting-sync }
+    hook window BufWritePre .* %{ format-buffer }
 
     try lsp-enable-window
     lsp-diagnostic-lines-disable window
