@@ -197,7 +197,7 @@ add-highlighter -override global/trailing-whitespace regex '\h+$' 0:Information
 
 add-highlighter -override global/show-matching show-matching
 
-hook global WinCreate .* %{ window-padding }
+# hook global WinCreate .* %{ window-padding }
 
 hook -group delete-scratch-message global BufCreate '\Q*scratch*' %{
     execute-keys '%d'
