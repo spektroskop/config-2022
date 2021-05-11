@@ -16,6 +16,12 @@ add-highlighter shared/go/rune/ regex ('.)([^'$]*) 1:attribute 2:Information
 add-highlighter shared/go/block_comment region -recurse /\* /\* \*/ fill comment
 add-highlighter shared/go/line_comment  region '//' $  fill comment
 
+add-highlighter shared/go/var_block region 'var\h+\(' '\)' group
+add-highlighter shared/go/var_block/ regex ^\h*\w+\b 0:variable
+add-highlighter shared/go/var_block/ ref go/code/values
+add-highlighter shared/go/var_block/ ref go/code/types
+add-highlighter shared/go/var_block/ ref go/code/keywords
+
 add-highlighter shared/go/code default-region group
 add-highlighter shared/go/code/numbers regex \b(0[bBoOxX]|[-+]?\d|\.\d)[\w.]*i? 0:value
 # add-highlighter shared/go/code/struct_val regex \b(\w+): 1:value # FIXME
