@@ -23,6 +23,10 @@ add-highlighter shared/go/var_block/ ref go/code/types
 add-highlighter shared/go/var_block/ ref go/code/keywords
 
 add-highlighter shared/go/code default-region group
+
+add-highlighter shared/go/code/struct_type regex (\w+)\{ 1:type
+add-highlighter shared/go/code/struct_var regex \b(\w+): 1:variable
+
 add-highlighter shared/go/code/numbers regex \b(0[bBoOxX]|[-+]?\d|\.\d)[\w.]*i? 0:value
 # add-highlighter shared/go/code/struct_val regex \b(\w+): 1:value # FIXME
 add-highlighter shared/go/code/var regex var\h+(\w+(,\h*\w+)*) 1:variable
