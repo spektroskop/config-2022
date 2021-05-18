@@ -125,25 +125,27 @@ fn main() -> result::Result<(), String> {
                 active_pane.id, main_width, main_height
             ));
 
-            // let row = panes
-            //     .iter()
-            //     .filter(|entry| entry.height == active_pane.height)
-            //     .collect::<Vec<&Entry>>();
-            // if row.len() > 1 {
-            //     let x = (active_window.width - main_width) / row.len() as u64;
-            //     for p in row {
-            //         resize_command.push(format!("resize-pane -t {} -x {}", p.id, x));
-            //     }
-            // }
-
-            let col = panes
-                .iter()
-                .filter(|entry| entry.width == active_pane.width)
-                .collect::<Vec<&Entry>>();
-            if col.len() > 1 {
-                let y = (active_window.height - main_height) / col.len() as u64;
-                for p in col {
-                    resize_command.push(format!("resize-pane -t {} -y {}", p.id, y));
+            if active_window.name.ends_with("|") {
+                let row = panes
+                    .iter()
+                    .filter(|entry| entry.height == active_pane.height)
+                    .collect::<Vec<&Entry>>();
+                if row.len() > 1 {
+                    let x = (active_window.width - main_width) / row.len() as u64;
+                    for p in row {
+                        resize_command.push(format!("resize-pane -t {} -x {}", p.id, x));
+                    }
+                }
+            } else {
+                let col = panes
+                    .iter()
+                    .filter(|entry| entry.width == active_pane.width)
+                    .collect::<Vec<&Entry>>();
+                if col.len() > 1 {
+                    let y = (active_window.height - main_height) / col.len() as u64;
+                    for p in col {
+                        resize_command.push(format!("resize-pane -t {} -y {}", p.id, y));
+                    }
                 }
             }
         }

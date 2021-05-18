@@ -246,6 +246,14 @@ hook global WinSetOption filetype=.* %{
     # set-option window extra_word_chars
 }
 
+hook global WinSetOption filetype=yaml %{
+    require-module smarttab
+    expandtab
+    set-option window tabstop 2
+    set-option window indentwidth 2
+    set-option window softtabstop 2
+}
+
 hook global WinSetOption filetype=rust %{
     set-option window lsp_auto_highlight_references true
     set-option window formatcmd 'rustfmt'
