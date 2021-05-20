@@ -255,8 +255,15 @@ hook global WinSetOption filetype=elixir %{
     set-option window tabstop 2
     set-option window indentwidth 2
     set-option window softtabstop 2
-
     hook window BufWritePre .* %{ lsp-formatting-sync }
+}
+
+hook global WinSetOption filetype=yaml %{
+    require-module smarttab
+    expandtab
+    set-option window tabstop 2
+    set-option window indentwidth 2
+    set-option window softtabstop 2
 }
 
 hook global WinSetOption filetype=rust %{
