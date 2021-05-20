@@ -31,7 +31,7 @@ add-highlighter shared/go/code/numbers regex \b(0[bBoOxX]|[-+]?\d|\.\d)[\w.]*i? 
 # add-highlighter shared/go/code/struct_val regex \b(\w+): 1:value # FIXME
 add-highlighter shared/go/code/var regex var\h+(\w+(,\h*\w+)*) 1:variable
 add-highlighter shared/go/code/short_var regex \b(\w+(,\h*\w+)*)\h+(:?=\h) 1:variable
-add-highlighter shared/go/code/function_call regex \b(\w+)\( 1:function
+add-highlighter shared/go/code/function_call regex \b((?!func)\w+)\( 1:function
 
 evaluate-commands %sh{
     join() { eval set -- $1; local IFS="|"; echo "$*"; }
