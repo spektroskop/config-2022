@@ -6,6 +6,8 @@ add_to_path=(
 	$HOME/.local/bin
 	$HOME/bin
 	$HOME/go/bin
+	$HOME/.local/opt/sublime_text
+	$HOME/.local/opt/sublime_merge
 )
 
 for path in "${add_to_path[@]}"; do

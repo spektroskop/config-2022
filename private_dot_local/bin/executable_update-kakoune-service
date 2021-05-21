@@ -2,6 +2,7 @@
 set -u
 name=$1
 prefix='~/.config/systemd/user'
+mkdir -p $prefix
 cat > ${prefix}/kak@${name}.service.d/override.conf <<END
 [Service]
 WorkingDirectory=$HOME
