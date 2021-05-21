@@ -54,7 +54,7 @@ add-highlighter shared/elm/let_in/type_signature/ regex \b[A-Z]\w*\b 0:type
 add-highlighter shared/elm/let_in/type_signature/ regex ^\w+\b 0:meta
 add-highlighter shared/elm/let_in/type_signature/ ref elm/code/operator
 add-highlighter shared/elm/let_in/default default-region group
-add-highlighter shared/elm/let_in/default/ regex (\w+)[^\n]*= 1:function ## FIXME
+# add-highlighter shared/elm/let_in/default/ regex (\w+)[^\n]*= 1:function ## FIXME
 add-highlighter shared/elm/let_in/default/ ref elm/code/keywords
 add-highlighter shared/elm/let_in/default/ ref elm/code/module_lookup
 add-highlighter shared/elm/let_in/default/ ref elm/code/number

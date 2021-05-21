@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -u
+client=$1
+session=$2
+path=$3
+echo "evaluate-commands -client $client %{edit '$path'}" | kak -p $session

@@ -22,6 +22,8 @@ plug "kak-lsp/kak-lsp" do %{
     cargo install --locked --force --path .
 }
 
+plug "TeddyDD/kakoune-edit-or-dir"
+
 # plug "gustavo-hms/luar"
 # plug "alexherbo2/search.kak"
 # evanrelf/reselect.kak
@@ -226,6 +228,7 @@ map global user /   '/(?i)'                        -docstring 'Case-insensitive 
 map global user w   ':remove-whitespace<ret>'      -docstring 'Remove trailing whitespace'
 map global user p   ':window-padding<ret>'         -docstring 'Window padding'
 map global user a   ';li'                          -docstring 'Append'
+map global user F   ':format-buffer<ret>'          -docstring 'Format buffer'
 
 map global normal '%' '<c-s>%'
 map global normal '#' :comment-line<ret>
@@ -244,6 +247,15 @@ hook global WinSetOption filetype=.* %{
     set-option window indentwidth 4
     set-option window softtabstop 4
     # set-option window extra_word_chars
+}
+
+hook global WinSetOption filetype=elixir %{
+    require-module smarttab
+    expandtab
+    set-option window tabstop 2
+    set-option window indentwidth 2
+    set-option window softtabstop 2
+    hook window BufWritePre .* %{ lsp-formatting-sync }
 }
 
 hook global WinSetOption filetype=yaml %{
@@ -276,14 +288,23 @@ hook global WinSetOption filetype=elm %{
     set-option window softtabstop 4
 
     # hook window BufWritePre .* %{ lsp-formatting-sync }
-    hook window BufWritePre .* %{ format-buffer }
+    # hook window BufWritePre .* %{ format-buffer }
 
-    try lsp-enable-window
-    lsp-diagnostic-lines-disable window
-    lsp-inline-diagnostics-disable window
+    # try lsp-enable-window
+    # lsp-diagnostic-lines-disable window
+    # lsp-inline-diagnostics-disable window
 
     remove-highlighter shared/elm
     source "%val{config}/rc/highlight/elm.kak"
+}
+
+hook global BufCreate .*\.gleam %{
+    set-option buffer filetype gleam
+}
+
+hook global WinSetOption filetype=gleam %{
+    remove-highlighter shared/gleam
+    source "%val{config}/rc/highlight/gleam.kak"
 }
 
 hook global WinSetOption filetype=go %{
@@ -301,4 +322,9 @@ hook global WinSetOption filetype=go %{
 
     remove-highlighter shared/go
     source "%val{config}/rc/highlight/go.kak"
+}
+
+hook global WinSetOption filetype=makefile %{
+    noexpandtab
+    set-option window indentwidth 0
 }
