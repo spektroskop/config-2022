@@ -53,9 +53,9 @@ define-command -override surround-add -params 2 %{
 
 colorscheme gruvy
 
-set-option -add global ui_options ncurses_assistant=none
-set-option -add global ui_options ncurses_status_on_top=false
-set-option -add global ui_options ncurses_enable_mouse=false
+set-option -add global ui_options terminal_assistant=none
+set-option -add global ui_options terminal_status_on_top=false
+set-option -add global ui_options terminal_enable_mouse=false
 set-option -add global ui_options terminal_set_title=false
 set-option      global startup_info_version 20200901
 set-option      global autoreload yes
