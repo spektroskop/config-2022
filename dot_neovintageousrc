@@ -1,1 +1,2 @@
-# TODO
+let mapleader=,
+nnoremap <leader>b :Neovintageous action=toggle_side_bar<CR>

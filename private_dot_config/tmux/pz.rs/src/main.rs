@@ -46,7 +46,7 @@ impl Entry {
     }
 
     fn should_ignore(&self) -> bool {
-        self.zoomed || self.name.ends_with("~")
+        self.zoomed || self.name.ends_with('~')
     }
 }
 
@@ -74,7 +74,7 @@ fn get_entries<const S: usize>(
         .map(Entry::from_str::<S>)
         .collect::<Result<Vec<_>>>()?;
     let (all_active, rest): (Vec<_>, Vec<_>) = all.into_iter().partition(|v| v.active);
-    let active = all_active.into_iter().nth(0);
+    let active = all_active.into_iter().next();
 
     Ok((active, rest))
 }
@@ -125,7 +125,7 @@ fn main() -> result::Result<(), String> {
                 active_pane.id, main_width, main_height
             ));
 
-            if active_window.name.ends_with("|") {
+            if active_window.name.ends_with('|') {
                 let row = panes
                     .iter()
                     .filter(|entry| entry.height == active_pane.height)
