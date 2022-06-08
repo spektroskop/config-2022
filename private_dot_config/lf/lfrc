@@ -1,4 +1,3 @@
-set nopreview
 set scrolloff 2
 set ratios 1:2:3
 set incsearch
